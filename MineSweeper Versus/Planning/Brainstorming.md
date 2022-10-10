@@ -53,7 +53,8 @@
 - Tiles with numbers are now score multipliers
 - Players now fish for...well, fish, instead of turning tiles
 - Bombs are now underwater nuclear bombs. The remaining players have that extra few minutes until radiation kills them
-- Spots that freeze players are electric eels that electrocute them
+- Spots that freeze players are electric eels that electrocute them (do other players cringe at the poor man, and then pretend they didn't see him?)
+- Might lead to a darker comedy
 
 
 # DESIGN DOC
