@@ -56,6 +56,22 @@
 - Spots that freeze players are electric eels that electrocute them (do other players cringe at the poor man, and then pretend they didn't see him?)
 - Might lead to a darker comedy
 
+## Features
+- Some tiles are worth more than others: this varies based on number present
+- Some tiles are worth more than others: this is randomized
+- When 1 player hits a bomb, they die
+- When 1 player hits a bomb, everyone dies but P1 dies instantly and others die slowly
+- Electric eel that stuns you if you are too quick (only if the bombs do NOT kill instantly)
+- Ice Instability (everything goes to hell and everyone dies only after everyone COLLECTIVELY hits X bombs):
+    - X:
+        - 4 * nr of players?
+    - Bomb consequence(s):
+        - Less fish for individual player
+    - Signs:
+        - maybe ice starts visibly breaking?
+        - Or something starts shaking (careful not to )
+        - Or screen starts filling up with radiation
+
 
 # DESIGN DOC
 
