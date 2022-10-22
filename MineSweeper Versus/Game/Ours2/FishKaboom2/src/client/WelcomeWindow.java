@@ -86,7 +86,12 @@ public class WelcomeWindow extends JFrame{
 				// TODO Auto-generated method stub
 				System.out.println("Button clicked");
 				String name = textf_username.getText();
-				ClientView cv = new ClientView(name);
+				try {
+					ClientView cv = new ClientView(name);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				//String ip = textf_serverIp.getText();
 			}
 			

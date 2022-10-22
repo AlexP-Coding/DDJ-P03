@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import util.Board;
-import util.Space;
+import util.MineButton;
 
 public class ClientView extends JFrame{
 	
@@ -37,43 +37,13 @@ public class ClientView extends JFrame{
 	private JPanel panel;
 	private JLabel u;
 	private BufferedImage image;
-	private Space[][] board = new Space[ClientView.Y][ClientView.X]	;
+	private Board board;
 	
 	
-	public ClientView(String username) {
+	public ClientView(String username) throws IOException {		
 		
-		int remainder = ClientView.BOMB_COUNT;
-		
-		double probability = (double) ClientView.BOMB_COUNT / (ClientView.X * ClientView.Y);
-		
-		panel = new JPanel();
-		try {
-			System.out.println("entre try");
-			for(int i=0; i < ClientView.Y; i++) {
-				for(int j=0; j < ClientView.X; j++) {
-					//panel.add(u = new JLabel("HELOOO: "));
-					//System.out.println("pass 2 for");
-					if(Math.random() < probability && remainder > 0) {
-						//System.out.println("enter if");
-						panel.add(u = new JLabel("HELOOO: "));
-						BufferedImage facingDown = ImageIO.read(new File("assets/TileUnknownBlueFish.png"));
-						image = ClientView.resizeImage(facingDown, ClientView.WIDHT, ClientView.HEIGHT);
-						//panel.add(new Space(true));
-						remainder--;
-					} else {
-						board[i][j] = new Space(false);
-					}
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		this.add(panel, BorderLayout.CENTER);
-		//layout = new Board();
 		ClientView.setInstance(this);
-		
-		//JPanel panel = new JPanel();
-		
+				
 		flags = BOMB_COUNT;
 		
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
@@ -81,6 +51,13 @@ public class ClientView extends JFrame{
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		this.setLocationRelativeTo(null);
+		this.setLayout(new BorderLayout());
+		
+		this.board = new Board();
+		this.getContentPane().add(board, BorderLayout.CENTER);
+		setResizable(false);
+		this.setVisible(true);
 	}
 	
 	public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) throws IOException {
