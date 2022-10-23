@@ -20,7 +20,7 @@ public class MineButton extends JButton{
 	private int bombNearby;
 	private BufferedImage image;
 	
-	public MineButton() throws IOException{
+	public MineButton(int x, int y) throws IOException{
 		super();
 		this.bomb = false;
 		flagged = false;
@@ -29,26 +29,21 @@ public class MineButton extends JButton{
 		
 		this.setGridStyleDefault();
 		
-		Dimension minSize = new Dimension(200, 500);
-		Dimension prefSize = new Dimension(200, 500);
-		Dimension maxSize = new Dimension(200, 500);
-		this.add(new Box.Filler(minSize, prefSize, maxSize));
+//		Dimension minSize = new Dimension(200, 500);
+//		Dimension prefSize = new Dimension(200, 500);
+//		Dimension maxSize = new Dimension(200, 500);
+//		this.add(new Box.Filler(minSize, prefSize, maxSize));
 	}
 	
 //	public void setGridStyleDefault() throws IOException {
 //		
-//		BufferedImage facingDown = ImageIO.read(new File("assets/TileUnknownBlueFish.png"));
-//		System.out.println(facingDown);
-//		image = ClientView.resizeImage(facingDown, ClientView.WIDHT, ClientView.HEIGHT);
+//		BufferedImage facingDown = ImageIO.read(new File("assets/TileUnknownBlueFish2.png"));
+//		image = ClientView.resizeImage(facingDown, 30, 30);
 //	}
 	
 	public void setGridStyleDefault() {
-		ImageIcon img = new ImageIcon("assets/TileUnknownBlueFish.png");
-		//image = ClientView.resizeImage(img, ClientView.WIDHT, ClientView.HEIGHT);
+		ImageIcon img = new ImageIcon("assets/TileUnknownBlueFish2.png");
 		this.setIcon(img);
-//		String imagePath = "TileUnknownBlueFish.png";
-//		this.setIcon((new ImageIcon(((new ImageIcon(getClass().getClassLoader().getResource(imagePath))).getImage()).getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH))));
-//		((ImageIcon) this.getIcon()).setDescription(imagePath);
 	}
 	
 
@@ -78,6 +73,11 @@ public class MineButton extends JButton{
 
 	public BufferedImage getImage() {
 		return image;
+	}
+	
+	public void setGridImage(String Fileimagename) throws IOException {
+		ImageIcon img = new ImageIcon(Fileimagename);
+		this.setIcon(img);
 	}
 
 //	public void setImage(String Fileimagename) throws IOException {

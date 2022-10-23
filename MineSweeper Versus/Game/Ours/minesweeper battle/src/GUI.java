@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.*;
 
 import javax.swing.JFrame;
@@ -36,10 +38,13 @@ public class GUI extends JFrame {
 		public void paintComponent(Graphics g) {
 			g.setColor(Color.DARK_GRAY);
 			g.fillRect(0,0,1280, 800);
+			Graphics2D g2 = (Graphics2D) g;
 			g.setColor(Color.gray);
+			Image img1 = Toolkit.getDefaultToolkit().getImage("minesweeper battle/src/assets/TileUnknown.png");
 			for(int i=0; i<16; i++) {
 				for(int j=0; j<9; j++) {
 					g.fillRect(spacing+i*80,spacing+j*80+80,80-2*spacing, 80-2*spacing);
+					g2.drawImage(img1, spacing+i*80, spacing+j*80+80, this);
 				}
 			}
 		}

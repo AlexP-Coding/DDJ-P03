@@ -28,15 +28,8 @@ public class ClientView extends JFrame{
 	
 	//GAME ATRIBUTES
 	public static final int BOMB_COUNT = 50;
-	private int score_board_width = 100;
-	private boolean end = false;
-	private boolean win = false;
-	private int flags;
 	
 	//ARGUMENTOS DO BOARD TODO
-	private JPanel panel;
-	private JLabel u;
-	private BufferedImage image;
 	private Board board;
 	
 	
@@ -44,7 +37,6 @@ public class ClientView extends JFrame{
 		
 		ClientView.setInstance(this);
 				
-		flags = BOMB_COUNT;
 		
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
 		this.setSize(X * WIDHT,Y * HEIGHT );
