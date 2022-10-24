@@ -36,6 +36,7 @@ public class WelcomeWindow extends JFrame{
 	
 	private ClientSideConnection csc;
 	
+	
 	private int playerID;
 	private int otherPlayer;
 
@@ -86,6 +87,7 @@ public class WelcomeWindow extends JFrame{
 				// TODO Auto-generated method stub
 				System.out.println("Button clicked");
 				String name = textf_username.getText();
+				
 				try {
 					ClientView cv = new ClientView(name);
 				} catch (IOException e1) {
@@ -128,4 +130,6 @@ public class WelcomeWindow extends JFrame{
 		WelcomeWindow window = new WelcomeWindow();
 		window.connectToServer();
 	}
+	
+	
 }

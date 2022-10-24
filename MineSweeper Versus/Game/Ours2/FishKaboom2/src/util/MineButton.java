@@ -27,8 +27,9 @@ public class MineButton extends JButton{
 		cleared = false;
 		bombNearby =0;
 		
-		this.setGridStyleDefault();
 		
+		this.setGridStyleDefault();
+		//this.addMouseListener(new MouseListener(x, y));
 //		Dimension minSize = new Dimension(200, 500);
 //		Dimension prefSize = new Dimension(200, 500);
 //		Dimension maxSize = new Dimension(200, 500);
@@ -42,13 +43,17 @@ public class MineButton extends JButton{
 //	}
 	
 	public void setGridStyleDefault() {
-		ImageIcon img = new ImageIcon("assets/TileUnknownBlueFish2.png");
+		ImageIcon img = new ImageIcon("assets/TileUnknownBlueFish3.png");
 		this.setIcon(img);
 	}
 	
 
 	public boolean hasBomb() {
 		return bomb;
+	}
+	
+	public void setBomb() {
+		this.bomb = true;
 	}
 
 	public boolean isFlagged() {
@@ -85,6 +90,9 @@ public class MineButton extends JButton{
 //		image = ClientView.resizeImage(temp, ClientView.WIDHT, ClientView.HEIGHT);
 //	}
 
+	public void applyImagetoGrid(Cell cell) {
+		String image;
+	}
 
 	
 }

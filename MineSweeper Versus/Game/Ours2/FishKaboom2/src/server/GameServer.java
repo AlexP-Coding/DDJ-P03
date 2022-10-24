@@ -2,12 +2,15 @@ package server;
 
 import java.io.*;
 import java.net.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class GameServer {
 	private ServerSocket serversocket;
 	private int numPlayers;
 	private ServerSideConnection player1;
 	private ServerSideConnection player2;
+	Map<Integer, String> players = new TreeMap<Integer,String>();
 	
 	public GameServer() {
 		System.out.println("---------GAME SERVER---------");
