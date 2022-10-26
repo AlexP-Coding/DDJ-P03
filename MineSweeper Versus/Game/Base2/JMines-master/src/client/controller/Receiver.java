@@ -56,6 +56,7 @@ public class Receiver implements ReceiverInterface {
 			}
 		} catch (Exception e) {
 			System.err.println("Can't connect to server: " + e.getMessage());
+			e.printStackTrace();
 			return -1;
 		}
 	}
@@ -85,7 +86,7 @@ public class Receiver implements ReceiverInterface {
 	}
 
 	/* (non-Javadoc)
-	 * TODO à fusionner avec startGame
+	 * TODO ÔøΩ fusionner avec startGame
 	 * @see client.controller.ReceiverInterface#sendNewGrid(server.model.Cell[][])
 	 */
 	@Override
@@ -148,9 +149,9 @@ public class Receiver implements ReceiverInterface {
 	}
 
 	/**
-	 * TODO peut-être fusionner isUserReady avec startGameWithOpponent histoire
-	 * de supprimer une requête réseau
-	 * Création de l'instance de jeu pour celui qui lance la partie
+	 * TODO peut-ÔøΩtre fusionner isUserReady avec startGameWithOpponent histoire
+	 * de supprimer une requÔøΩte rÔøΩseau
+	 * CrÔøΩation de l'instance de jeu pour celui qui lance la partie
 	 *
 	 * @param opponent
 	 * @throws RemoteException

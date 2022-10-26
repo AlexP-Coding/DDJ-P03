@@ -1,7 +1,9 @@
 package server.controller;
 
 import java.awt.Point;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -44,7 +46,7 @@ public class Dispatcher extends UnicastRemoteObject implements DispatcherInterfa
 		this.waitingList = new ArrayList<Player>();
 		this.gameList = new HashMap<Player, Game>();
 		try {
-			LocateRegistry.createRegistry(1099);
+			LocateRegistry.createRegistry(1088);
 			Naming.rebind("JMines", this);
 			System.out.println("Serveur pret");
 		} catch (RemoteException e) {
@@ -82,7 +84,7 @@ public class Dispatcher extends UnicastRemoteObject implements DispatcherInterfa
 		Player player = this.getPlayerFromName(username);
 		Game game = this.gameList.get(player);
 
-		//TODO game est à null dans le cas où game le mauvais joueur commence
+		//TODO game est ÔøΩ null dans le cas oÔøΩ game le mauvais joueur commence
 		if (game != null) {
 
 			int result = game.move(player, p, bombUsed);
