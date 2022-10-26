@@ -17,7 +17,7 @@ public class GameServer {
 		numPlayers = 0;
 		
 		try {
-			serversocket = new ServerSocket(5000);
+			serversocket = new ServerSocket(5051);
 		} catch (IOException e) {
 			System.out.println("IOException from GameServer Constructor");
 		}

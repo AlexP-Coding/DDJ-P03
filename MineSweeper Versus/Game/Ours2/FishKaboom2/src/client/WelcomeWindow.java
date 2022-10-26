@@ -90,6 +90,7 @@ public class WelcomeWindow extends JFrame{
 				
 				try {
 					ClientView cv = new ClientView(name);
+					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -114,7 +115,7 @@ public class WelcomeWindow extends JFrame{
 		public ClientSideConnection() {
 			System.out.println("---------CLIENT-------");
 			try {
-				socket = new Socket("localhost", 5000);
+				socket = new Socket("localhost", 5051);
 				dataIn = new DataInputStream(socket.getInputStream());
 				dataOut = new DataOutputStream(socket.getOutputStream());
 				playerID = dataIn.readInt();
