@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import util.Board;
 import util.MineButton;
+import util.PlayerPanel;
 
 public class ClientView extends JFrame{
 	
@@ -21,8 +22,8 @@ public class ClientView extends JFrame{
 	private Board layout;
 	
 	//setup
-	public static final int WIDHT = 20;
-	public static final int HEIGHT = 20;
+	public static final int WIDHT = 40;
+	public static final int HEIGHT = 40;
 	public static final int X = 30;
 	public static final int Y = 16;
 	
@@ -31,7 +32,7 @@ public class ClientView extends JFrame{
 	
 	//ARGUMENTOS DO BOARD TODO
 	private Board board;
-	
+	private PlayerPanel playerPanel;
 	
 	public ClientView(String username) throws IOException {		
 		
@@ -47,7 +48,10 @@ public class ClientView extends JFrame{
 		this.setLayout(new BorderLayout());
 		
 		this.board = new Board();
+		this.playerPanel = new PlayerPanel(username);
+		
 		this.getContentPane().add(board, BorderLayout.CENTER);
+		this.getContentPane().add(playerPanel, BorderLayout.EAST);
 		setResizable(false);
 		this.setVisible(true);
 	}

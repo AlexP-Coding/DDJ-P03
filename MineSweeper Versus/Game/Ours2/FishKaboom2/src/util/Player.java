@@ -5,11 +5,14 @@ public class Player {
 	int code;
 	String id;
 	int score;
+	int minesFound;
+	int i = 0;
 	
 	public Player(String id) {
 		this.code = -1;
 		this.id = id;
 		this.score = 0;
+		this.minesFound = 0;
 	}
 
 	public int getCode() {
@@ -36,5 +39,11 @@ public class Player {
 		this.score = score;
 	}
 	
+	public int getMinesFound() {
+		return this.minesFound;
+	}
 	
+	public void setMinesFound(int minesFoundUpdate) {
+		minesFound = minesFoundUpdate;
+	}		
 }
