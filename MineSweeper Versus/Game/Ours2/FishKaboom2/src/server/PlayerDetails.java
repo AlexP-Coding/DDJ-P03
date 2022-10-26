@@ -7,22 +7,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.Player;
+
 
 public class PlayerDetails {
 	
 	private int nrPlayers;
-	private List<Player> playersList;
+	private List<PlayerSocket> playersList;
+	private Map<String, PlayerSocket> playersMap;
 	
-	public PlayerDetails () {
+	public PlayerDetails() {
 		this.nrPlayers = 0;
-		this.playersList = new ArrayList<Player>();
+		this.playersList = new ArrayList<PlayerSocket>();
 	}
 	
 	public int getNrPlayers() {
 		return this.nrPlayers;
 	}
 	
-	public List<Player> getPlayers() {
+	public List<PlayerSocket> getPlayers() {
 		return this.playersList;
 	}
 	
@@ -32,9 +35,18 @@ public class PlayerDetails {
 		this.nrPlayers++;
 		Socket playerSocket = serverSocket.accept();
 		
-		Player player = new Player(id, playerSocket);
+		PlayerSocket player = new PlayerSocket(id, playerSocket);
 				
 		this.playersList.add(player);
+		this.playersMap.put(id, player);
+	}
+	
+	public PlayerSocket getPlayerSocket(String id) {
+		return this.playersMap.get(id);
+	}
+	
+	public Player getPlayer(String id) {
+		return this.playersMap.get(id).getPlayer();
 	}
 	
 	/*

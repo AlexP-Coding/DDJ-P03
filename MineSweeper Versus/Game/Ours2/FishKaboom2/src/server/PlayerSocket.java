@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class Player {
+import util.Player;
 
-	private String id;
+public class PlayerSocket {
+
+	private Player player;
 	private Socket socket;
 	private String address;
 	private int port;
 	private BufferedReader in;
 	private DataOutputStream out;
 	
-	public Player(String id, Socket socket) throws IOException {
-		this.id = id;
+	public PlayerSocket(String id, Socket socket) throws IOException {
+		this.player = new Player(id);
 		this.socket = socket;
 		this.address = socket.getInetAddress().getHostAddress();
 		this.port = socket.getPort();
@@ -25,7 +27,10 @@ public class Player {
 	}
 	
 	public String getId() {
-		return this.id;
+		return this.getPlayer().getId();
+	}
+	public Player getPlayer() {
+		return this.player;
 	}
 	public Socket getSocket() {
 		return this.socket;
