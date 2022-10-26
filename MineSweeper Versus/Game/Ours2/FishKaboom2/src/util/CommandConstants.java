@@ -4,6 +4,7 @@ public class CommandConstants {
 
 	// Command types (format bellow)
 	//public static String CMD_ = "";
+	public static String CMD_NEWPLAYER = "";
 	public static String CMD_START = "START";
 	public static String CMD_CLEAR = "CLEAR";
 	public static String CMD_FLAG = "FLAG";

@@ -1,0 +1,6 @@
+**/bin/
+*.class
+**/bin/**/*.class
+'MineSweeper Versus'/Game/Ours2/FishKaboom2/bin/server/*
+MineSweeper\ Versus/Game/Ours2/FishKaboom2/bin/client/*
+MineSweeper\ Versus/Game/Ours2/FishKaboom2/bin/util/*

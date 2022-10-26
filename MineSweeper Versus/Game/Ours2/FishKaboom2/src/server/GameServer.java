@@ -26,7 +26,6 @@ public class GameServer {
 	public void acceptConnections() {
 		try {
 			System.out.println("Waiting for connections...");
-			
 			while ( numPlayers < 2) {
 				Socket socket = serversocket.accept();
 				numPlayers++;
