@@ -85,7 +85,7 @@ public class WelcomeWindow extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				System.out.println("Button clicked");
+				//System.out.println("Button clicked");
 				String name = textf_username.getText();
 				
 				try {
@@ -121,7 +121,7 @@ public class WelcomeWindow extends JFrame{
 				playerID = dataIn.readInt();
 				System.out.println("Connection to server as Player #" + playerID + ".");
 			} catch (IOException e) {
-				System.out.println("IO Exception from csc contructor");
+				System.out.println("IO Exception from client side connection contructor");
 			}
 		}
 		

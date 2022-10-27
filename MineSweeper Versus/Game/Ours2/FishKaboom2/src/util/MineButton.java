@@ -113,44 +113,40 @@ public class MineButton extends JButton{
 		return posy;
 	}
 	
-	public void setImageWhenCliced() throws IOException {
+	public void setImageWhenClicked() throws IOException {
 		if(!isCleared()) {
-			if(isFlagged()) {
+			if(isFlagged())
 				setGridImage("assets/TileFlag.png");
-			}
-			if(hasBomb()) {
+
+			else if(hasBomb())
 				setGridImage("assets/Tilemine.png");
-			}
-			else {
-				if(getBombNearby() == 0) {
+		
+			else if(getBombNearby() == 0) 
 					setGridImage("assets/TileEmpty.png");
-				}
-				if(getBombNearby() == 1) {
-					setGridImage("assets/Tile1.png");
-				}
-				if(getBombNearby() == 2) {
-					setGridImage("assets/Tile2.png");
-				}
-				if(getBombNearby() == 3) {
-					setGridImage("assets/Tile3.png");
-				}
-				if(getBombNearby() == 4) {
-					setGridImage("assets/Tile4.png");
-				}
-				if(getBombNearby() == 5) {
-					setGridImage("assets/Tile5.png");
-				}
-				if(getBombNearby() == 6) {
-					setGridImage("assets/Tile6.png");
-				}
-				if(getBombNearby() == 7) {
-					setGridImage("assets/Tile7.png");
-				}
-				if(getBombNearby() == 8) {
-					setGridImage("assets/Tile8.png");
-				}
-				
-			}
+			
+			else if(getBombNearby() == 1) 
+				setGridImage("assets/Tile1.png");
+			
+			else if(getBombNearby() == 2) 
+				setGridImage("assets/Tile2.png");
+			
+			else if(getBombNearby() == 3) 
+				setGridImage("assets/Tile3.png");
+			
+			else if(getBombNearby() == 4) 
+				setGridImage("assets/Til4.png");
+			
+			else if(getBombNearby() == 5) 
+				setGridImage("assets/Tile5.png");
+			
+			else if(getBombNearby() == 6) 
+				setGridImage("assets/Tile6.png");
+			
+			else if(getBombNearby() == 7) 
+				setGridImage("assets/Tile7.png");
+			
+			else if(getBombNearby() == 8) 
+				setGridImage("assets/Tile8.png");
 		}
 	}
 	
@@ -163,8 +159,8 @@ public class MineButton extends JButton{
 		@Override
 		public void mouseMoved(MouseEvent e) {
 			// TODO Auto-generated method stub
-			System.out.println("The mouse was moved");
-			System.out.println("x:" + posx + " y:" + posy);
+			//System.out.println("The mouse was moved");
+			//System.out.println("x:" + posx + " y:" + posy);
 		}
 	}
 	
@@ -178,7 +174,7 @@ public class MineButton extends JButton{
 			
 			
 			try {
-				setImageWhenCliced();
+				setImageWhenClicked();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

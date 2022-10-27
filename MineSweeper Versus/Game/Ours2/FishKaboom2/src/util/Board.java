@@ -1,6 +1,7 @@
 package util;
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -12,18 +13,25 @@ import javax.swing.JPanel;
 import client.ClientView;
 
 public class Board extends JPanel {
+	private enum Location {
+		TOP,
+		BOTTOM,
+		LEFT,
+		RIGHT;
+	}
+	
 	private MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
 	
 	public Board() throws IOException {		
 		super();
-		this.grid = new MineButton[ClientView.Y][ClientView.X];
+		this.grid = new MineButton[ClientView.X][ClientView.Y];
 		this.makeNewBoard();
 		this.placeMines();
 		this.placeNumbersandSpaces();
-        this.setBounds(0, 0, 480, 420);
-        this.setLayout(new GridLayout(ClientView.Y, ClientView.X));
+        this.setBounds(0, 0, ClientView.Y * ClientView.WIDHT, ClientView.X * ClientView.HEIGHT);
+        this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
 		
@@ -33,135 +41,114 @@ public class Board extends JPanel {
 	
 	//Iniciates a grid of undiscovered mines
 	public void makeNewBoard() throws IOException {
-		MineButton button;
-		for(int i=0; i< ClientView.Y; i++) {
-			for(int j=0; j< ClientView.X; j++) {
-				button = new MineButton(i,j);
+		try {
+		for(int i=0; i< ClientView.X; i++) { // ROWS
+			for(int j=0; j< ClientView.Y; j++) { // COLUMNS
+				MineButton button = new MineButton(i,j);
+				GridBagConstraints constraint = new GridBagConstraints();
+				constraint.gridx = i;
+				constraint.gridy = j;
+				this.add(button, constraint);
+				
 				this.add(button);
 				this.grid[i][j] = button;
 			}
+		}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			throw e;
 		}
 	}
 	
 	public void placeMines() {
 		int x, y;
-		while(maxBombs >= totalBombs) {
+		while(totalBombs < maxBombs) {
 			
-			x = (int)(Math.random() *30);
-			y = (int)(Math.random()*16);
-			System.out.println("yuyuyu: " + x +" yuyuy:" +y);
-			if((this.grid[y][x]).hasBomb() == false) {
-				grid[y][x].setBomb();
+			x = (int)(Math.random() *ClientView.X);
+			y = (int)(Math.random()*ClientView.Y);
+			System.out.println("Placing mine at [" + x + ", " + y + "]");
+			if((this.grid[x][y]).hasBomb() == false) {
+				grid[x][y].setBomb();
 				totalBombs ++ ;
 			}
 		}
-		System.out.println("totalbombas:"+totalBombs);
+		System.out.println("totalbombas:" + totalBombs);
 
 	}
 	
 	public void placeNumbersandSpaces() {
 		System.out.println("PLACE NUMBERS");
-		int numberBombs = 0;
-		int k,k1,k2,k3;
-		for(int i=0; i< ClientView.Y; i++) {
-			for(int j=0; j< ClientView.X; j++) {
-				System.out.println("x e y:" + i + "hh " + j);
+		//int k,k1,k2,k3;
+		for(int i=0; i< ClientView.X; i++) {
+			for(int j=0; j< ClientView.Y; j++) {
+				int numberBombs = 0;
 				if(!grid[i][j].hasBomb()) {
-					//System.out.println(i + "-" +j);
-					//left right side
-					k=i-1;
-					//System.out.println("left-" + k);
-					/*left side of the grid*/
-					if(k>0 && grid[k][j].hasBomb() == true ) {
+					
+					if (hasBombAdjacent(i, j, null, Location.LEFT))
 						numberBombs++;
-					}
 					
-					k1=i+1;
-					System.out.println("right-" + k1);
-					if(k1<ClientView.Y && grid[k1][j].hasBomb() == true) {
+					if (hasBombAdjacent(i, j, null, Location.RIGHT))
 						numberBombs++;
-					}
 					
+					if (hasBombAdjacent(i, j, Location.TOP, null))
+						numberBombs++;
 					
-					//up down side
-					k2=j-1;
-					if(k2>=0) {
-						if(grid[i][k2].hasBomb() == true ) {
-							numberBombs++;
-						}
-					}
-					k3=j+1;
-					if(k3<ClientView.Y) {
-						if(grid[i][k3].hasBomb() == true ) {
-							numberBombs++;
-						}
-					}
+					if (hasBombAdjacent(i, j, Location.BOTTOM, null))
+						numberBombs++;
 					
-					//diagonals
-					if (k>=0 && k2>=0) {
-						if(grid[k][k2].hasBomb() == true) {
-							numberBombs++;
-						}
-					}
-					if (k1<ClientView.Y && k3<ClientView.Y) {
-						if(grid[k1][k3].hasBomb() == true) {
-							numberBombs++;
-						}
-					}
-					if (k>=0 && k3<ClientView.Y) {
-						if(grid[k][k3].hasBomb() == true) {
-							numberBombs++;
-						}
-					}
-					if (k1<ClientView.Y && k3<ClientView.Y) {
-						if(grid[k1][k3].hasBomb() == true) {
-							numberBombs++;
-						}
-					}
+					if (hasBombAdjacent(i, j, Location.TOP, Location.LEFT))
+						numberBombs++;
+					
+					if (hasBombAdjacent(i, j, Location.BOTTOM, Location.LEFT))
+						numberBombs++;
+					
+					if (hasBombAdjacent(i, j, Location.TOP, Location.RIGHT))
+						numberBombs++;
+					
+					if (hasBombAdjacent(i, j, Location.BOTTOM, Location.RIGHT))
+						numberBombs++;
 				}
 				grid[i][j].setBombNearby(numberBombs);
+				System.out.println("[x, y] = [" + i + ", " + j + "], #bombsAdjacent = " + numberBombs);
 			}
 		}
 	}
 	
 	public void setImageWhenClicked(int x, int y) throws IOException {
 		if(!grid[x][y].isCleared()) {
-			if(grid[x][y].isFlagged()) {
+			if(grid[x][y].isFlagged())
 				grid[x][y].setGridImage("assets/TileFlag.png");
-			}
-			if(grid[x][y].hasBomb()) {
+
+			else if(grid[x][y].hasBomb())
 				grid[x][y].setGridImage("assets/Tilemine.png");
-			}
-			else {
-				if(grid[x][y].getBombNearby() == 0) {
+		
+			else if(grid[x][y].getBombNearby() == 0) 
 					grid[x][y].setGridImage("assets/TileEmpty.png");
-				}
-				if(grid[x][y].getBombNearby() == 1) {
-					grid[x][y].setGridImage("assets/Tile1.png");
-				}
-				if(grid[x][y].getBombNearby() == 2) {
-					grid[x][y].setGridImage("assets/Tile2.png");
-				}
-				if(grid[x][y].getBombNearby() == 3) {
-					grid[x][y].setGridImage("assets/Tile3.png");
-				}
-				if(grid[x][y].getBombNearby() == 4) {
-					grid[x][y].setGridImage("assets/Tile4.png");
-				}
-				if(grid[x][y].getBombNearby() == 5) {
-					grid[x][y].setGridImage("assets/Tile5.png");
-				}
-				if(grid[x][y].getBombNearby() == 6) {
-					grid[x][y].setGridImage("assets/Tile6.png");
-				}
-				if(grid[x][y].getBombNearby() == 7) {
-					grid[x][y].setGridImage("assets/Tile7.png");
-				}
-				if(grid[x][y].getBombNearby() == 8) {
-					grid[x][y].setGridImage("assets/Tile8.png");
-				}
-				
-			}
+			
+			else if(grid[x][y].getBombNearby() == 1) 
+				grid[x][y].setGridImage("assets/Tile1.png");
+			
+			else if(grid[x][y].getBombNearby() == 2) 
+				grid[x][y].setGridImage("assets/Tile2.png");
+			
+			else if(grid[x][y].getBombNearby() == 3) 
+				grid[x][y].setGridImage("assets/Tile3.png");
+			
+			else if(grid[x][y].getBombNearby() == 4) 
+				grid[x][y].setGridImage("assets/Til4.png");
+			
+			else if(grid[x][y].getBombNearby() == 5) 
+				grid[x][y].setGridImage("assets/Tile5.png");
+			
+			else if(grid[x][y].getBombNearby() == 6) 
+				grid[x][y].setGridImage("assets/Tile6.png");
+			
+			else if(grid[x][y].getBombNearby() == 7) 
+				grid[x][y].setGridImage("assets/Tile7.png");
+			
+			else if(grid[x][y].getBombNearby() == 8) 
+				grid[x][y].setGridImage("assets/Tile8.png");
 		}
 	}
 	
@@ -176,6 +163,35 @@ public class Board extends JPanel {
 	
 	public MineButton getMineButton(int x, int y) {
 		return this.grid[x][y];
+	}
+	
+	public boolean hasBombAdjacent(int x, int y, Location relativeX, Location relativeY) {
+		int checkX = -1;
+		int checkY = -1;
+		
+		if (relativeX == null)
+			checkX = x;
+		else if (relativeX.equals(Location.TOP) )
+			checkX = x-1;
+		else if (relativeX.equals(Location.BOTTOM))
+			checkX = x+1;
+		
+		if (relativeY == null)
+			checkY = y;
+		else if (relativeY.equals(Location.LEFT) )
+			checkY = y-1;
+		else if (relativeY.equals(Location.RIGHT))
+			checkY = y+1;
+		
+		if ((checkX >= 0) && 
+			(checkX < ClientView.X) &&
+			(checkY >= 0) &&
+			(checkY < ClientView.Y) ) {
+			
+			return grid[checkX][checkY].hasBomb();			
+		}
+		
+		return false;
 	}
 	
 }

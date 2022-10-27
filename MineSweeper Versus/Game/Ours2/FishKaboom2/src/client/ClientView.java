@@ -22,10 +22,10 @@ public class ClientView extends JFrame{
 	private Board layout;
 	
 	//setup
-	public static final int WIDHT = 40;
 	public static final int HEIGHT = 40;
-	public static final int X = 30;
-	public static final int Y = 16;
+	public static final int WIDHT = 40;
+	public static final int X = 16;
+	public static final int Y = 30;
 	
 	//GAME ATRIBUTES
 	public static final int BOMB_COUNT = 50;
@@ -40,7 +40,7 @@ public class ClientView extends JFrame{
 				
 		
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
-		this.setSize(X * WIDHT,Y * HEIGHT );
+		this.setSize(Y * WIDTH,X * HEIGHT );
 		this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -50,8 +50,8 @@ public class ClientView extends JFrame{
 		this.board = new Board();
 		this.playerPanel = new PlayerPanel(username);
 		
-		this.getContentPane().add(board, BorderLayout.CENTER);
-		this.getContentPane().add(playerPanel, BorderLayout.EAST);
+		this.add(board, BorderLayout.CENTER);
+		this.add(playerPanel, BorderLayout.EAST);
 		setResizable(false);
 		this.setVisible(true);
 	}
