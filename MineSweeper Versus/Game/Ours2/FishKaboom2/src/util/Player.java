@@ -2,29 +2,41 @@ package util;
 
 public class Player {
 	
-	int code;
+	enum Color {
+        BLUE,
+        RED,
+        YELLOW,
+        GREEN;
+    }
+	
+	Color colorType;
+	int colorId;
 	String id;
 	int score;
 	int minesFound;
 	int i = 0;
 	
 	public Player(String id) {
-		this.code = -1;
+		this.colorId = -1;
 		this.id = id;
 		this.score = 0;
 		this.minesFound = 0;
 	}
+	
+	public Player() {}
 
-	public int getCode() {
-		return code;
+	public int getColorId() {
+		return this.colorId;
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public void setColorId(int colorId) {
+		this.colorId = colorId;
+		this.colorType = Color.values()[colorId];
 	}
+
 
 	public String getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(String id) {
@@ -32,11 +44,17 @@ public class Player {
 	}
 
 	public int getScore() {
-		return score;
+		return this.score;
 	}
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+	
+	public int updateScore(int value) {
+		int newScore = this.score + value; // value may be negative
+		this.score = newScore > 0? newScore : 0; // player score may not
+		return this.score;
 	}
 	
 	public int getMinesFound() {
@@ -44,6 +62,6 @@ public class Player {
 	}
 	
 	public void setMinesFound(int minesFoundUpdate) {
-		minesFound = minesFoundUpdate;
+		this.minesFound = minesFoundUpdate;
 	}		
 }
