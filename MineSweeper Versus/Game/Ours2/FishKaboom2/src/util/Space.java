@@ -23,7 +23,7 @@ public class Space extends JPanel{
 		bombNearby =0;
 		
 		BufferedImage facingDown = ImageIO.read(new File("assets/TileUnknownBlueFish.png"));
-		image = ClientView.resizeImage(facingDown, ClientView.WIDHT, ClientView.HEIGHT);
+		image = ClientView.resizeImage(facingDown, ClientView.WIDTH, ClientView.HEIGHT);
 	}
 
 	public boolean hasBomb() {
@@ -56,7 +56,7 @@ public class Space extends JPanel{
 
 	public void setImage(String Fileimagename) throws IOException {
 		BufferedImage temp = ImageIO.read(new File(Fileimagename));
-		image = ClientView.resizeImage(temp, ClientView.WIDHT, ClientView.HEIGHT);
+		image = ClientView.resizeImage(temp, ClientView.WIDTH, ClientView.HEIGHT);
 	}
 
 

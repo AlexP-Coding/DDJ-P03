@@ -23,7 +23,7 @@ public class ClientView extends JFrame{
 	
 	//setup
 	public static final int HEIGHT = 40;
-	public static final int WIDHT = 40;
+	public static final int WIDTH = 40;
 	public static final int X = 16;
 	public static final int Y = 30;
 	

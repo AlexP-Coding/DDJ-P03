@@ -30,7 +30,7 @@ public class Board extends JPanel {
 		this.makeNewBoard();
 		this.placeMines();
 		this.placeNumbersandSpaces();
-        this.setBounds(0, 0, ClientView.Y * ClientView.WIDHT, ClientView.X * ClientView.HEIGHT);
+        this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
