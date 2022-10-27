@@ -53,7 +53,7 @@ public class Player {
 	
 	public int updateScore(int value) {
 		int newScore = this.score + value; // value may be negative
-		this.score = newScore > 0? newScore : 0; // player score may not
+		this.score = Math.max(0, newScore); // player score may not be negative
 		return this.score;
 	}
 	
@@ -63,5 +63,5 @@ public class Player {
 	
 	public void setMinesFound(int minesFoundUpdate) {
 		this.minesFound = minesFoundUpdate;
-	}		
+	}
 }
