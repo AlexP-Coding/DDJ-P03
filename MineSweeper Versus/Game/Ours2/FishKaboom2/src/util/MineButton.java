@@ -15,8 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import client.ClientView;
-import util.Board.Click;
-import util.Board.Move;
+// import util.Board.Click;
+// import util.Board.Move;
 
 public class MineButton extends JButton{
 	public int posx, posy;
