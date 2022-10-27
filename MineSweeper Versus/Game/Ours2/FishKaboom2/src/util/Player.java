@@ -9,7 +9,7 @@ public class Player {
         GREEN;
     }
 	
-	Color colorType;
+	Color color;
 	int colorId;
 	String id;
 	int score;
@@ -18,6 +18,7 @@ public class Player {
 	
 	public Player(String id) {
 		this.colorId = -1;
+		this.color = null;
 		this.id = id;
 		this.score = 0;
 		this.minesFound = 0;
@@ -28,12 +29,19 @@ public class Player {
 	public int getColorId() {
 		return this.colorId;
 	}
-
-	public void setColorId(int colorId) {
-		this.colorId = colorId;
-		this.colorType = Color.values()[colorId];
+	
+	public Color getColor() {
+		return this.color;
 	}
 
+	public void setColor(int colorId) {
+		this.colorId = colorId;
+		this.color = Color.values()[colorId];
+	}
+	
+	public void setColor(String colorVal) {
+		this.color = Color.valueOf(colorVal);
+	}
 
 	public String getId() {
 		return this.id;
