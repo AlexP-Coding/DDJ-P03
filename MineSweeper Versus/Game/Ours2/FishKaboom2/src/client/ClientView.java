@@ -32,7 +32,6 @@ public class ClientView extends JFrame{
 	
 	//ARGUMENTOS DO BOARD TODO
 	private Board board;
-	private PlayerPanel playerPanel;
 	
 	public ClientView(String username) throws IOException {		
 		
@@ -48,10 +47,8 @@ public class ClientView extends JFrame{
 		this.setLayout(new BorderLayout());
 		
 		this.board = new Board();
-		this.playerPanel = new PlayerPanel(username);
 		
 		this.add(board, BorderLayout.CENTER);
-		this.add(playerPanel, BorderLayout.EAST);
 		setResizable(false);
 		this.setVisible(true);
 	}
