@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import util.Board;
+import util.Handler;
 import util.MineButton;
 import util.PlayerPanel;
 
@@ -33,6 +34,8 @@ public class ClientView extends JFrame{
 	//ARGUMENTOS DO BOARD TODO
 	private Board board;
 	
+	private Handler handler = new Handler();
+	
 	public ClientView(String username) throws IOException {		
 		
 		ClientView.setInstance(this);
@@ -46,7 +49,7 @@ public class ClientView extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
-		this.board = new Board();
+		this.board = new Board(handler);
 		
 		this.add(board, BorderLayout.CENTER);
 		setResizable(false);

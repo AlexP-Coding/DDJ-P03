@@ -11,6 +11,8 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 import client.ClientView;
+import util.MineButton.Click;
+import util.MineButton.Move;
 
 public class Board extends JPanel {
 	private enum Location {
@@ -24,10 +26,10 @@ public class Board extends JPanel {
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
 	
-	public Board() throws IOException {		
+	public Board(Handler handler) throws IOException {		
 		super();
 		this.grid = new MineButton[ClientView.X][ClientView.Y];
-		this.makeNewBoard();
+		this.makeNewBoard(handler);
 		this.placeMines();
 		this.placeNumbersandSpaces();
         this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
@@ -36,15 +38,18 @@ public class Board extends JPanel {
 		this.setBackground(Color.BLACK);
 		
 		
+		//this.openMoreCells();
+		
+		
 	}
 	
 	
 	//Iniciates a grid of undiscovered mines
-	public void makeNewBoard() throws IOException {
+	public void makeNewBoard(Handler handler) throws IOException {
 		try {
 		for(int i=0; i< ClientView.X; i++) { // ROWS
 			for(int j=0; j< ClientView.Y; j++) { // COLUMNS
-				MineButton button = new MineButton(i,j);
+				MineButton button = new MineButton(i,j, handler);
 				GridBagConstraints constraint = new GridBagConstraints();
 				constraint.gridx = i;
 				constraint.gridy = j;
@@ -153,16 +158,28 @@ public class Board extends JPanel {
 	}
 	
 	
-//	public void setGridFromTab(Cell[][] cells) {
-//		for(int i=0; i< ClientView.Y; i++) {
-//			for(int j=0; j< ClientView.X; j++) {
-//				this.grid[i][j].set;
-//			}
-//		}
-//	}
-	
 	public MineButton getMineButton(int x, int y) {
 		return this.grid[x][y];
+	}
+	
+	public MineButton[][] getAllMineButton() {
+		return this.grid;
+	}
+	
+	public void tentativa(MineButton tiles) {
+		int x = tiles.getPosx();
+		int y = tiles.getPosy();
+		
+		for(int i=0; i< ClientView.X; i++) {
+			for (int j=0; j< ClientView.Y; j++) {
+				if (tiles.getClicked() == true) {
+					if (tiles.getBombNearby() == 0) {
+						System.out.println("YESSS");
+					}
+				}
+			}
+		}
+		
 	}
 	
 	public boolean hasBombAdjacent(int x, int y, Location relativeX, Location relativeY) {
@@ -193,5 +210,85 @@ public class Board extends JPanel {
 		
 		return false;
 	}
+	
+	public void openMoreCells() throws IOException {
+		System.out.println("OPEN CELLS");
+		for(int i=0; i< ClientView.X; i++) { // ROWS
+			for(int j=0; j< ClientView.Y; j++) {
+				System.out.println("CLICEKD: " + grid[i][j].getClicked());
+				if(grid[i][j].getClicked() == true) {
+					System.out.println("is cliekes: "+grid[i][j].getClicked());
+					//openMoreCellsAux(i,j);
+					
+				}
+			}
+		}
+	}
+	
+	public void openMoreCellsAux(int x, int y) throws IOException {
+		System.out.println("OPEN CELLS-----");
+		if(grid[x][y].getBombNearby() == 0) {
+			System.out.println("ZEROOO");
+			if (verifyPosition(x, y, null, Location.LEFT)) {
+				if (grid[x][y-1].hasBomb() == false && grid[x][y-1].isCleared() == false)
+					setCells(x, y-1);
+			}
+			if (verifyPosition(x, y, null, Location.RIGHT)) {
+				if (grid[x][y+1].hasBomb() == false && grid[x][y+1].isCleared() == false)
+					setCells(x, y+1);
+			}
+			
+			if (verifyPosition(x, y, Location.TOP, null)) {
+				if (grid[x-1][y].hasBomb() == false && grid[x-1][y].isCleared() == false)
+					setCells(x-1, y);
+			}
+			
+			if (verifyPosition(x, y, Location.BOTTOM, null)) {
+				if (grid[x+1][y].hasBomb() == false && grid[x+1][y].isCleared() == false)
+					setCells(x+1, y);
+			}
+		}	
+	}
+	
+	public void setCells(int x, int y) throws IOException {
+		if (grid[x][y].getBombNearby() != 0) {
+			grid[x][y].setImageByNumbersOfBomb();
+			grid[x][y].setCleared(true);
+		} else if (grid[x][y].getBombNearby() == 0){
+			openMoreCellsAux(x, y);
+		}
+	}
+	
+	public boolean verifyPosition(int x, int y, Location relativeX, Location relativeY) {
+		int checkX = -1;
+		int checkY = -1;
+		
+		if (relativeX == null)
+			checkX = x;
+		else if (relativeX.equals(Location.TOP) )
+			checkX = x-1;
+		else if (relativeX.equals(Location.BOTTOM))
+			checkX = x+1;
+		
+		if (relativeY == null)
+			checkY = y;
+		else if (relativeY.equals(Location.LEFT) )
+			checkY = y-1;
+		else if (relativeY.equals(Location.RIGHT))
+			checkY = y+1;
+		
+		if ((checkX >= 0) && 
+			(checkX < ClientView.X) &&
+			(checkY >= 0) &&
+			(checkY < ClientView.Y) ) {
+			
+			return true;			
+		}
+		
+		return false;
+	}
+	
+	
+	
 	
 }
