@@ -14,7 +14,6 @@ public class Player {
 	String id;
 	int score;
 	int minesFound;
-	int i = 0;
 	
 	public Player(String id) {
 		this.colorId = -1;

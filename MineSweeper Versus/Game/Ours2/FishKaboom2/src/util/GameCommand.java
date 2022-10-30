@@ -18,7 +18,6 @@ public class GameCommand {
 	// Player/Server who sent command
 	private String playerId; // Can be a player or NULL (the server)
 	
-
 	public GameCommand (String msg) {
 		this.fullMsg = msg;
 		String[] tokensMsg =  msg.split(CommandConstants.SPLITTER);
