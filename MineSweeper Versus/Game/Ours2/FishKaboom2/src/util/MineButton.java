@@ -29,6 +29,7 @@ public class MineButton extends JButton{
 	private BufferedImage image;
 	private boolean clicked;
 	private Handler handler;
+
 	
 	public MineButton(int x, int y, Handler h) throws IOException{
 		super();
@@ -154,6 +155,9 @@ public class MineButton extends JButton{
 	public boolean getClicked(){
 		return clicked;
 	}
+	public void setClicked(boolean c) {
+		clicked = c;
+	}
 	
 	public void clickButton() throws IOException {
 		handler.click(this);
@@ -210,5 +214,39 @@ public class MineButton extends JButton{
 		else if(getBombNearby() == 8) 
 			setGridImage("assets/Tile8.png");
 	}
+	
+	public boolean verifyPosition(int x, int y, int positionx, int positiony) {
+		System.out.println("VERIFICA");
+		int checkX = -1;
+		int checkY = -1;
+		
+		if (positionx == 0)
+			checkX = x;
+		else if (positionx == x - 1)
+			checkX = x-1;
+		else if (positionx == x+1)
+			checkX = x+1;
+		
+		if (y == 0)
+			checkY = y;
+		else if (positiony == y-1 )
+			checkY = y-1;
+		else if (positiony == y+1)
+			checkY = y+1;
+		
+		System.out.println("X: " + checkX + " Y: " + checkY);
+		
+		if ((checkX >= 0) && 
+			(checkX < ClientView.X) &&
+			(checkY >= 0) &&
+			(checkY < ClientView.Y) ) {
+			System.out.println("EXISTE");
+			
+			return true;			
+		}
+		
+		return false;
+	}
+
 	
 }

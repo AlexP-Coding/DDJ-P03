@@ -22,13 +22,13 @@ public class Board extends JPanel {
 		RIGHT;
 	}
 	
-	private MineButton[][] grid;
+	public static MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
 	
 	public Board(Handler handler) throws IOException {		
 		super();
-		this.grid = new MineButton[ClientView.X][ClientView.Y];
+		Board.grid = new MineButton[ClientView.X][ClientView.Y];
 		this.makeNewBoard(handler);
 		this.placeMines();
 		this.placeNumbersandSpaces();
@@ -37,8 +37,6 @@ public class Board extends JPanel {
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
 		
-		
-		//this.openMoreCells();
 		
 		
 	}
@@ -56,7 +54,7 @@ public class Board extends JPanel {
 				this.add(button, constraint);
 				
 				this.add(button);
-				this.grid[i][j] = button;
+				Board.grid[i][j] = button;
 			}
 		}
 		}
@@ -73,7 +71,7 @@ public class Board extends JPanel {
 			x = (int)(Math.random() *ClientView.X);
 			y = (int)(Math.random()*ClientView.Y);
 			System.out.println("Placing mine at [" + x + ", " + y + "]");
-			if((this.grid[x][y]).hasBomb() == false) {
+			if((Board.grid[x][y]).hasBomb() == false) {
 				grid[x][y].setBomb();
 				totalBombs ++ ;
 			}
@@ -83,8 +81,7 @@ public class Board extends JPanel {
 	}
 	
 	public void placeNumbersandSpaces() {
-		System.out.println("PLACE NUMBERS");
-		//int k,k1,k2,k3;
+		
 		for(int i=0; i< ClientView.X; i++) {
 			for(int j=0; j< ClientView.Y; j++) {
 				int numberBombs = 0;
@@ -159,27 +156,11 @@ public class Board extends JPanel {
 	
 	
 	public MineButton getMineButton(int x, int y) {
-		return this.grid[x][y];
+		return Board.grid[x][y];
 	}
 	
 	public MineButton[][] getAllMineButton() {
-		return this.grid;
-	}
-	
-	public void tentativa(MineButton tiles) {
-		int x = tiles.getPosx();
-		int y = tiles.getPosy();
-		
-		for(int i=0; i< ClientView.X; i++) {
-			for (int j=0; j< ClientView.Y; j++) {
-				if (tiles.getClicked() == true) {
-					if (tiles.getBombNearby() == 0) {
-						System.out.println("YESSS");
-					}
-				}
-			}
-		}
-		
+		return Board.grid;
 	}
 	
 	public boolean hasBombAdjacent(int x, int y, Location relativeX, Location relativeY) {
@@ -210,85 +191,6 @@ public class Board extends JPanel {
 		
 		return false;
 	}
-	
-	public void openMoreCells() throws IOException {
-		System.out.println("OPEN CELLS");
-		for(int i=0; i< ClientView.X; i++) { // ROWS
-			for(int j=0; j< ClientView.Y; j++) {
-				System.out.println("CLICEKD: " + grid[i][j].getClicked());
-				if(grid[i][j].getClicked() == true) {
-					System.out.println("is cliekes: "+grid[i][j].getClicked());
-					//openMoreCellsAux(i,j);
-					
-				}
-			}
-		}
-	}
-	
-	public void openMoreCellsAux(int x, int y) throws IOException {
-		System.out.println("OPEN CELLS-----");
-		if(grid[x][y].getBombNearby() == 0) {
-			System.out.println("ZEROOO");
-			if (verifyPosition(x, y, null, Location.LEFT)) {
-				if (grid[x][y-1].hasBomb() == false && grid[x][y-1].isCleared() == false)
-					setCells(x, y-1);
-			}
-			if (verifyPosition(x, y, null, Location.RIGHT)) {
-				if (grid[x][y+1].hasBomb() == false && grid[x][y+1].isCleared() == false)
-					setCells(x, y+1);
-			}
-			
-			if (verifyPosition(x, y, Location.TOP, null)) {
-				if (grid[x-1][y].hasBomb() == false && grid[x-1][y].isCleared() == false)
-					setCells(x-1, y);
-			}
-			
-			if (verifyPosition(x, y, Location.BOTTOM, null)) {
-				if (grid[x+1][y].hasBomb() == false && grid[x+1][y].isCleared() == false)
-					setCells(x+1, y);
-			}
-		}	
-	}
-	
-	public void setCells(int x, int y) throws IOException {
-		if (grid[x][y].getBombNearby() != 0) {
-			grid[x][y].setImageByNumbersOfBomb();
-			grid[x][y].setCleared(true);
-		} else if (grid[x][y].getBombNearby() == 0){
-			openMoreCellsAux(x, y);
-		}
-	}
-	
-	public boolean verifyPosition(int x, int y, Location relativeX, Location relativeY) {
-		int checkX = -1;
-		int checkY = -1;
-		
-		if (relativeX == null)
-			checkX = x;
-		else if (relativeX.equals(Location.TOP) )
-			checkX = x-1;
-		else if (relativeX.equals(Location.BOTTOM))
-			checkX = x+1;
-		
-		if (relativeY == null)
-			checkY = y;
-		else if (relativeY.equals(Location.LEFT) )
-			checkY = y-1;
-		else if (relativeY.equals(Location.RIGHT))
-			checkY = y+1;
-		
-		if ((checkX >= 0) && 
-			(checkX < ClientView.X) &&
-			(checkY >= 0) &&
-			(checkY < ClientView.Y) ) {
-			
-			return true;			
-		}
-		
-		return false;
-	}
-	
-	
 	
 	
 }
