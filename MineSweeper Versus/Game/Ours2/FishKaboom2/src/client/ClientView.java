@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import util.Board;
 import util.Handler;
 import util.MineButton;
-import util.PlayerPanel;
 
 public class ClientView extends JFrame{
 	
@@ -25,8 +24,8 @@ public class ClientView extends JFrame{
 	//setup
 	public static final int HEIGHT = 40;
 	public static final int WIDTH = 40;
-	public static final int X = 16;
-	public static final int Y = 30;
+	public static final int X = 15;
+	public static final int Y = 15;
 	
 	//GAME ATRIBUTES
 	public static final int BOMB_COUNT = 50;

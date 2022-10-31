@@ -11,8 +11,6 @@ import java.io.IOException;
 import javax.swing.JPanel;
 
 import client.ClientView;
-import util.MineButton.Click;
-import util.MineButton.Move;
 
 public class Board extends JPanel {
 	private enum Location {
@@ -138,7 +136,7 @@ public class Board extends JPanel {
 				grid[x][y].setGridImage("assets/Tile3.png");
 			
 			else if(grid[x][y].getBombNearby() == 4) 
-				grid[x][y].setGridImage("assets/Til4.png");
+				grid[x][y].setGridImage("assets/Tile4.png");
 			
 			else if(grid[x][y].getBombNearby() == 5) 
 				grid[x][y].setGridImage("assets/Tile5.png");
