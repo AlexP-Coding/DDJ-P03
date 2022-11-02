@@ -14,6 +14,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class WelcomeWindow extends JFrame{
 	
@@ -26,20 +27,8 @@ public class WelcomeWindow extends JFrame{
 	/** Button labels */
 	private JLabel usernameLabel, serverIpLabel;
 	
-	private JPanel panel;
-	
-	private Image background;
-	
-	private ImagePanel picturePanel;
-	
 	private JButton login;
 	
-	private ClientSideConnection csc;
-	
-	
-	private int playerID;
-	private int otherPlayer;
-
 	public WelcomeWindow() throws IOException {
 		
 		//Under the frame - setup
@@ -48,13 +37,14 @@ public class WelcomeWindow extends JFrame{
 		//Player name
 		panel.add(usernameLabel = new JLabel("Username: "));
 		panel.add(textf_username = new JTextField(16));
+		panel.add(serverIpLabel = new JLabel("Server Public IP: "));
 		
 		//server to witch player will connect to play
-		//panel.add(serverIpLabel = new JLabel("Server IP:"));
-		//panel.add(textf_serverIp = new JTextField(16));
+		panel.add(serverIpLabel = new JLabel("Server IP:"));
+		panel.add(textf_serverIp = new JTextField(20));
 		
 		this.usernameLabel.setForeground(Color.white);
-		//this.serverIpLabel.setForeground(Color.white);
+		this.serverIpLabel.setForeground(Color.white);
 		
 		panel.add(login = new JButton("LOGIN"));
 		
@@ -62,7 +52,6 @@ public class WelcomeWindow extends JFrame{
 		JLabel pic = new JLabel(new ImageIcon("assets/fish-kaboom2.png"));
 		panel.add(pic);
 		
-		actionlogin();
 		 
 		//Backgound Color
 		panel.setBackground(Color.BLACK);
@@ -77,6 +66,7 @@ public class WelcomeWindow extends JFrame{
 		
 		this.setVisible(true);
 		
+		actionlogin(); // setup login
 	}
 	
 	public void actionlogin() {
@@ -86,50 +76,20 @@ public class WelcomeWindow extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//System.out.println("Button clicked");
-				String name = textf_username.getText();
+				String playerId = textf_username.getText();
+				String serverIp = textf_serverIp.getText();
 				
 				try {
-					ClientView cv = new ClientView(name);
+					// Starts up a client view if button clicked
+					ClientView cv = new ClientView(playerId, serverIp);
 					dispose();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				//String ip = textf_serverIp.getText();
 			}
 			
 		});
-	}
-	
-	public void connectToServer() {
-		csc = new ClientSideConnection();
-	}
-	
-	//Client Connection
-	//class - all the things that a player need to connect to a server
-	private class ClientSideConnection {
-		private Socket socket;
-		private DataInputStream dataIn;
-		private DataOutputStream dataOut;
-		
-		public ClientSideConnection() {
-			System.out.println("---------CLIENT-------");
-			try {
-				socket = new Socket("localhost", 5051);
-				dataIn = new DataInputStream(socket.getInputStream());
-				dataOut = new DataOutputStream(socket.getOutputStream());
-				playerID = dataIn.readInt();
-				System.out.println("Connection to server as Player #" + playerID + ".");
-			} catch (IOException e) {
-				System.out.println("IO Exception from client side connection contructor");
-			}
-		}
-		
-	}
-	
-	public static void main(String[] args) throws IOException {
-		WelcomeWindow window = new WelcomeWindow();
-		window.connectToServer();
 	}
 	
 	

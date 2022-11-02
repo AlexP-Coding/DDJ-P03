@@ -12,8 +12,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import util.Board;
-import util.Handler;
 import util.MineButton;
+import util.Player;
+import util.PlayerSocket;
+import util.SocketInfo;
 
 public class ClientView extends JFrame{
 	
@@ -33,13 +35,19 @@ public class ClientView extends JFrame{
 	//ARGUMENTOS DO BOARD TODO
 	private Board board;
 	
-	private Handler handler = new Handler();
+	private Player player;
+
+	// Server communication
+	private PlayerSocket playerSocket;
+	private static final int PORT_DEFAULT = 5000;
 	
-	public ClientView(String username) throws IOException {		
+	public ClientView(String username, String host) throws IOException {		
 		
 		ClientView.setInstance(this);
-				
 		
+		//playerSocket = new PlayerSocket(username, host, PORT_DEFAULT);
+		//player = playerSocket.getPlayer();
+				
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
 		this.setSize(Y * WIDTH,X * HEIGHT );
 		this.setVisible(true);
@@ -48,7 +56,7 @@ public class ClientView extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
-		this.board = new Board(handler);
+		this.board = new Board();
 		
 		this.add(board, BorderLayout.CENTER);
 		setResizable(false);

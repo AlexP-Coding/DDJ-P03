@@ -20,14 +20,14 @@ public class Board extends JPanel {
 		RIGHT;
 	}
 	
-	public static MineButton[][] grid;
+	private MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
 	
-	public Board(Handler handler) throws IOException {		
+	public Board() throws IOException {		
 		super();
-		Board.grid = new MineButton[ClientView.X][ClientView.Y];
-		this.makeNewBoard(handler);
+		this.grid = new MineButton[ClientView.X][ClientView.Y];
+		this.makeNewBoard();
 		this.placeMines();
 		this.placeNumbersandSpaces();
         this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
@@ -36,23 +36,22 @@ public class Board extends JPanel {
 		this.setBackground(Color.BLACK);
 		
 		
-		
 	}
 	
 	
 	//Iniciates a grid of undiscovered mines
-	public void makeNewBoard(Handler handler) throws IOException {
+	public void makeNewBoard() throws IOException {
 		try {
 		for(int i=0; i< ClientView.X; i++) { // ROWS
 			for(int j=0; j< ClientView.Y; j++) { // COLUMNS
-				MineButton button = new MineButton(i,j, handler);
+				MineButton button = new MineButton(i,j);
 				GridBagConstraints constraint = new GridBagConstraints();
 				constraint.gridx = i;
 				constraint.gridy = j;
 				this.add(button, constraint);
 				
 				this.add(button);
-				Board.grid[i][j] = button;
+				this.grid[i][j] = button;
 			}
 		}
 		}
@@ -69,7 +68,7 @@ public class Board extends JPanel {
 			x = (int)(Math.random() *ClientView.X);
 			y = (int)(Math.random()*ClientView.Y);
 			System.out.println("Placing mine at [" + x + ", " + y + "]");
-			if((Board.grid[x][y]).hasBomb() == false) {
+			if((this.grid[x][y]).hasBomb() == false) {
 				grid[x][y].setBomb();
 				totalBombs ++ ;
 			}
@@ -79,7 +78,8 @@ public class Board extends JPanel {
 	}
 	
 	public void placeNumbersandSpaces() {
-		
+		System.out.println("PLACE NUMBERS");
+		//int k,k1,k2,k3;
 		for(int i=0; i< ClientView.X; i++) {
 			for(int j=0; j< ClientView.Y; j++) {
 				int numberBombs = 0;
@@ -136,7 +136,7 @@ public class Board extends JPanel {
 				grid[x][y].setGridImage("assets/Tile3.png");
 			
 			else if(grid[x][y].getBombNearby() == 4) 
-				grid[x][y].setGridImage("assets/Tile4.png");
+				grid[x][y].setGridImage("assets/Til4.png");
 			
 			else if(grid[x][y].getBombNearby() == 5) 
 				grid[x][y].setGridImage("assets/Tile5.png");
@@ -153,12 +153,16 @@ public class Board extends JPanel {
 	}
 	
 	
-	public MineButton getMineButton(int x, int y) {
-		return Board.grid[x][y];
-	}
+//	public void setGridFromTab(Cell[][] cells) {
+//		for(int i=0; i< ClientView.Y; i++) {
+//			for(int j=0; j< ClientView.X; j++) {
+//				this.grid[i][j].set;
+//			}
+//		}
+//	}
 	
-	public MineButton[][] getAllMineButton() {
-		return Board.grid;
+	public MineButton getMineButton(int x, int y) {
+		return this.grid[x][y];
 	}
 	
 	public boolean hasBombAdjacent(int x, int y, Location relativeX, Location relativeY) {
@@ -189,6 +193,5 @@ public class Board extends JPanel {
 		
 		return false;
 	}
-	
 	
 }

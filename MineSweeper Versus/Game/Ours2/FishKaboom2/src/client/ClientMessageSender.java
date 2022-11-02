@@ -1,6 +1,6 @@
 package client;
 
-import util.CommandConstants;
+import util.GameConstants;
 import util.GameCommand;
 
 import java.io.BufferedReader;
@@ -11,6 +11,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import util.GameCommand.CommandType;
 
 
 public class ClientMessageSender {
@@ -39,7 +41,7 @@ public class ClientMessageSender {
 	}
 	
 	public int sendNewPlayerMsg() throws IOException {
-		String msg = GameCommand.createCommandMsg(CommandConstants.CMD_NEWPLAYER, this.playerId, null);
+		String msg = GameCommand.createCommandMsg(CommandType.NEW_PLAYER, this.playerId, null);
 		sendMsg(msg);
 		
 		String response;
@@ -55,11 +57,11 @@ public class ClientMessageSender {
 	}
 	
 	public void sendGameStartMsg() throws IOException {
-		String msg = GameCommand.createCommandMsg(CommandConstants.CMD_START , playerId, null);
+		String msg = GameCommand.createCommandMsg(CommandType.START , playerId, null);
 		sendMsg(msg);
 	}
 	
-	public void sendClickedSpotMsg(String cmdType, int x, int y) throws IOException {
+	public void sendClickedSpotMsg(CommandType cmdType, int x, int y) throws IOException {
 		List<String> tokens = 	new ArrayList<String>(
 				Arrays.asList(
 					"" + x, 
@@ -72,11 +74,11 @@ public class ClientMessageSender {
 	
 	
 	public void sendClearSpotMsg(int x, int y) throws IOException {
-		sendClickedSpotMsg(CommandConstants.CMD_CLEAR, x, y);
+		sendClickedSpotMsg(CommandType.CLEAR, x, y);
 	}
 	
 	
 	public void sendFlagMsg(int x, int y) throws IOException {
-		sendClickedSpotMsg(CommandConstants.CMD_FLAG, x, y);
+		sendClickedSpotMsg(CommandType.FLAG, x, y);
 	}
 }

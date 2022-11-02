@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import util.GameConstants;
 import util.Player;
+import util.PlayerSocket;
 
 
 public class PlayerDetails {
@@ -29,16 +31,16 @@ public class PlayerDetails {
 		return this.playersList;
 	}
 	
-	public void addPlayer(String id, ServerSocket serverSocket) 
+	public void addPlayer(String id, Socket socket) 
 			throws IOException {
 		
 		this.nrPlayers++;
-		Socket playerSocket = serverSocket.accept();
 		
-		PlayerSocket player = new PlayerSocket(id, playerSocket);
-				
-		this.playersList.add(player);
-		this.playersMap.put(id, player);
+		PlayerSocket playerSocket = new PlayerSocket(id, GameConstants.SOCKET_SENDER, socket);
+		playerSocket.getPlayer().setColor(nrPlayers-1);		
+		
+		this.playersList.add(playerSocket);
+		this.playersMap.put(id, playerSocket);
 	}
 	
 	public PlayerSocket getPlayerSocket(String id) {
@@ -58,7 +60,7 @@ public class PlayerDetails {
 			throws IOException {
 		
 		for (int i = 0; i < this.nrPlayers; i++) {
-			this.playersList.get(i).sendMsgToPlayer(msg);
+			this.playersList.get(i).sendMsg(msg);
 		}
 	}
 }
