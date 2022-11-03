@@ -1,26 +1,16 @@
 package client;
 
 import java.awt.BorderLayout;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import util.Board;
 import util.Handler;
-import util.MineButton;
 
 public class ClientView extends JFrame{
 	
 	private static ClientView instance;
-	
-	private Board layout;
-	
+		
 	//setup
 	public static final int HEIGHT = 40;
 	public static final int WIDTH = 40;
@@ -53,13 +43,6 @@ public class ClientView extends JFrame{
 		this.add(board, BorderLayout.CENTER);
 		setResizable(false);
 		this.setVisible(true);
-	}
-	
-	public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) throws IOException {
-		Image resultingImage = originalImage.getScaledInstance(width, height, Image.SCALE_DEFAULT);
-		BufferedImage outputImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		outputImage.getGraphics().drawImage(resultingImage, 0, 0, null);
-		return outputImage;
 	}
 	
 	public static void setInstance(ClientView instance) {

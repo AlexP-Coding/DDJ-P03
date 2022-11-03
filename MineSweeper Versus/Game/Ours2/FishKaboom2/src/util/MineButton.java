@@ -1,25 +1,16 @@
 package util;
 
-import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import client.ClientView;
-// import util.Board.Click;
-// import util.Board.Move;
 
 public class MineButton extends JButton{
 	
@@ -93,24 +84,8 @@ public class MineButton extends JButton{
 	
 	public void setGridStyleDefault() {
 		ImageIcon img;
-//		int randomimage = (int)(Math.random() *4);
-//		System.out.println("random number: " + randomimage);
-//		if (randomimage == 0) {
-			img = new ImageIcon("assets/TileUnknownBlueFish3.png");
-			this.setIcon(img);
-//		}
-//		else if (randomimage == 1) {
-//			img = new ImageIcon("assets/TileUnkownFishRed3.png");
-//			this.setIcon(img);
-//		}
-//		else if (randomimage == 2) {
-//			img = new ImageIcon("assets/TileUnknownGreenFish3.png");
-//			this.setIcon(img);
-//		}
-//		else if (randomimage == 3) {
-//			img = new ImageIcon("assets/TileUnknownYellowFish3.png");
-//			this.setIcon(img);
-//		}
+		img = new ImageIcon("assets/TileUnknownBlueFish3.png");
+		this.setIcon(img);
 	}
 	
 
@@ -179,7 +154,6 @@ public class MineButton extends JButton{
 	}
 	
 	public void setImageWhenClicked() throws IOException {
-		//if(!isCleared()) {
 			if(isFlagged())
 				setImageFlagged();
 
@@ -190,7 +164,6 @@ public class MineButton extends JButton{
 				setImageByNumbersOfBomb();
 			}
 			
-		//}
 	}
 	
 	public void setImageFlagged() throws IOException {
@@ -224,39 +197,6 @@ public class MineButton extends JButton{
 		
 		else if(getBombNearby() == 8) 
 			setGridImage("assets/Tile8.png");
-	}
-	
-	public boolean verifyPosition(int x, int y, int positionx, int positiony) {
-		System.out.println("VERIFICA");
-		int checkX = -1;
-		int checkY = -1;
-		
-		if (positionx == 0)
-			checkX = x;
-		else if (positionx == x - 1)
-			checkX = x-1;
-		else if (positionx == x+1)
-			checkX = x+1;
-		
-		if (y == 0)
-			checkY = y;
-		else if (positiony == y-1 )
-			checkY = y-1;
-		else if (positiony == y+1)
-			checkY = y+1;
-		
-		System.out.println("X: " + checkX + " Y: " + checkY);
-		
-		if ((checkX >= 0) && 
-			(checkX < ClientView.X) &&
-			(checkY >= 0) &&
-			(checkY < ClientView.Y) ) {
-			System.out.println("EXISTE");
-			
-			return true;			
-		}
-		
-		return false;
 	}
 	
 	public boolean verify2(int x, int y, Location relativeX, Location relativeY) {
@@ -300,40 +240,46 @@ public class MineButton extends JButton{
 		int py = this.getPosy();
 		
 		if(verify2(px,py,null, Location.LEFT)) {
-//			System.out.println(Board.getMineButton(px, py-1).isCleared());
 			Board.getMineButton(px, py-1).setCleared(true);
 			adjacentes.add(Board.getMineButton(px, py-1));
 		}
+		
 		if(verify2(px,py,null, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px, py+1));
 			Board.getMineButton(px, py+1).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.TOP, null)) {
 			adjacentes.add(Board.getMineButton(px-1,py));
 			Board.getMineButton(px-1, py).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.BOTTOM, null)) {
 			adjacentes.add(Board.getMineButton(px+1, py));
 			Board.getMineButton(px+1, py).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.TOP, Location.LEFT)) {
 			adjacentes.add(Board.getMineButton(px-1,py-1));
 			Board.getMineButton(px-1,py-1).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.BOTTOM, Location.LEFT)) {
 			adjacentes.add(Board.getMineButton(px+1,py-1));
 			Board.getMineButton(px+1,py-1).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.TOP, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px-1,py+1));
 			Board.getMineButton(px-1,py+1).setCleared(true);
 		}
+		
 		if(verify2(px,py,Location.BOTTOM, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px+1,py+1));
 			Board.getMineButton(px+1,py+1).setCleared(true);
 		}
 		
-		System.out.println("ultimo adjacente: " + adjacentes.size());
+//System.out.println("ultimo adjacente: " + adjacentes.size());
 		return adjacentes;
 
 	}

@@ -3,9 +3,6 @@ package util;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.io.IOException;
 
 import javax.swing.JPanel;
@@ -34,8 +31,6 @@ public class Board extends JPanel {
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
-		
-		
 		
 	}
 	

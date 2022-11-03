@@ -21,17 +21,11 @@ public class WelcomeWindow extends JFrame{
 	private JTextField textf_username;
 	
 	/** Text field for server IP */
-	private JTextField textf_serverIp;
+	//private JTextField textf_serverIp;
 	
 	/** Button labels */
-	private JLabel usernameLabel, serverIpLabel;
-	
-	private JPanel panel;
-	
-	private Image background;
-	
-	private ImagePanel picturePanel;
-	
+	private JLabel usernameLabel, serverIpLabel;	
+		
 	private JButton login;
 	
 	private ClientSideConnection csc;
