@@ -153,7 +153,7 @@ public class Board extends JPanel {
 	}
 	
 	
-	public MineButton getMineButton(int x, int y) {
+	public static MineButton getMineButton(int x, int y) {
 		return Board.grid[x][y];
 	}
 	
