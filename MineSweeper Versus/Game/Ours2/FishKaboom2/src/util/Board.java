@@ -10,12 +10,6 @@ import javax.swing.JPanel;
 import client.ClientView;
 
 public class Board extends JPanel {
-	private enum Location {
-		TOP,
-		BOTTOM,
-		LEFT,
-		RIGHT;
-	}
 	
 	public static MineButton[][] grid;
 	private int totalBombs=0;
@@ -78,75 +72,38 @@ public class Board extends JPanel {
 		for(int i=0; i< ClientView.X; i++) {
 			for(int j=0; j< ClientView.Y; j++) {
 				int numberBombs = 0;
-				if(!grid[i][j].hasBomb()) {
+				MineButton mineButton = grid[i][j];
+				if(!mineButton.hasBomb()) {
 					
-					if (hasBombAdjacent(i, j, null, Location.LEFT))
+					if (mineButton.hasBombAdjacent(i, j, null, MineButton.Location.LEFT))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, null, Location.RIGHT))
+					if (mineButton.hasBombAdjacent(i, j, null, MineButton.Location.RIGHT))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.TOP, null))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.TOP, null))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.BOTTOM, null))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.BOTTOM, null))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.TOP, Location.LEFT))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.TOP, MineButton.Location.LEFT))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.BOTTOM, Location.LEFT))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.BOTTOM, MineButton.Location.LEFT))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.TOP, Location.RIGHT))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.TOP, MineButton.Location.RIGHT))
 						numberBombs++;
 					
-					if (hasBombAdjacent(i, j, Location.BOTTOM, Location.RIGHT))
+					if (mineButton.hasBombAdjacent(i, j, MineButton.Location.BOTTOM, MineButton.Location.RIGHT))
 						numberBombs++;
 				}
-				grid[i][j].setBombNearby(numberBombs);
+				mineButton.setBombNearby(numberBombs);
 				System.out.println("[x, y] = [" + i + ", " + j + "], #bombsAdjacent = " + numberBombs);
 			}
 		}
 	}
-	
-	public void setImageWhenClicked(int x, int y) throws IOException {
-		if(!grid[x][y].isCleared()) {
-			if(grid[x][y].isFlagged())
-				grid[x][y].setGridImage("assets/TileFlag.png");
-
-			else if(grid[x][y].hasBomb())
-				grid[x][y].setGridImage("assets/Tilemine.png");
-		
-			else if(grid[x][y].getBombNearby() == 0) 
-					grid[x][y].setGridImage("assets/TileEmpty.png");
-			
-			else if(grid[x][y].getBombNearby() == 1) 
-				grid[x][y].setGridImage("assets/Tile1.png");
-			
-			else if(grid[x][y].getBombNearby() == 2) 
-				grid[x][y].setGridImage("assets/Tile2.png");
-			
-			else if(grid[x][y].getBombNearby() == 3) 
-				grid[x][y].setGridImage("assets/Tile3.png");
-			
-			else if(grid[x][y].getBombNearby() == 4) 
-				grid[x][y].setGridImage("assets/Tile4.png");
-			
-			else if(grid[x][y].getBombNearby() == 5) 
-				grid[x][y].setGridImage("assets/Tile5.png");
-			
-			else if(grid[x][y].getBombNearby() == 6) 
-				grid[x][y].setGridImage("assets/Tile6.png");
-			
-			else if(grid[x][y].getBombNearby() == 7) 
-				grid[x][y].setGridImage("assets/Tile7.png");
-			
-			else if(grid[x][y].getBombNearby() == 8) 
-				grid[x][y].setGridImage("assets/Tile8.png");
-		}
-	}
-	
 	
 	public static MineButton getMineButton(int x, int y) {
 		return Board.grid[x][y];
@@ -155,35 +112,4 @@ public class Board extends JPanel {
 	public MineButton[][] getAllMineButton() {
 		return Board.grid;
 	}
-	
-	public boolean hasBombAdjacent(int x, int y, Location relativeX, Location relativeY) {
-		int checkX = -1;
-		int checkY = -1;
-		
-		if (relativeX == null)
-			checkX = x;
-		else if (relativeX.equals(Location.TOP) )
-			checkX = x-1;
-		else if (relativeX.equals(Location.BOTTOM))
-			checkX = x+1;
-		
-		if (relativeY == null)
-			checkY = y;
-		else if (relativeY.equals(Location.LEFT) )
-			checkY = y-1;
-		else if (relativeY.equals(Location.RIGHT))
-			checkY = y+1;
-		
-		if ((checkX >= 0) && 
-			(checkX < ClientView.X) &&
-			(checkY >= 0) &&
-			(checkY < ClientView.Y) ) {
-			
-			return grid[checkX][checkY].hasBomb();			
-		}
-		
-		return false;
-	}
-	
-	
 }
