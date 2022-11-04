@@ -32,8 +32,7 @@ class MsgQueueManager implements Runnable {
 			try {
 				String msg = "";
 				msg = this.msgQueue.poll();
-				//System.out.println("run methoth: " + msg);
-				if (msg != null) 
+				if (msg != null && msg != "") 
 					interpretMsg(msg);
 			}
 			catch (Exception e) {
@@ -44,7 +43,7 @@ class MsgQueueManager implements Runnable {
 	
 	public void interpretMsg(String msg) throws IOException {
 		GameCommand cmd = GameCommand.createCommand(msg);
-		System.out.println("SERVIDOR FULL MESSAGE: " + msg);
+		System.out.println("SERVER QueueManager retrieved: " + msg);
 		
 		// NEW_PLAYER is the only command that must also be taken care of
 		// in the PlayerMsgManager
@@ -70,14 +69,13 @@ class MsgQueueManager implements Runnable {
 	 * Sends new player msg to all players
 	 */
 	public void interpretNewPlayer(GameCommand cmd) throws IOException {
+		System.out.println("SERVER Interpret New Player: " + cmd.getFullMsg());
 		String playerId = cmd.getPlayerId();
-		System.out.println("interpretNewPlayer: " + playerId);
 		int colorId = playerDetails.getPlayer(playerId).getColorId();
-		System.out.println("color: " + colorId);
 		String newMsg = GameCommand.createMsgNewPlayer(playerId, colorId);
-		System.out.println("criou");
+		System.out.println("SERVER sending msg START: " + newMsg);
 		this.playerDetails.sendMsgToAllPlayers(newMsg);	
-		System.out.println("enviou");
+		System.out.println("SERVER sending msg DONE: " + newMsg);
 	}
 	
 	/*

@@ -37,12 +37,7 @@ public class ServerMsgManager implements Runnable {
 			String msg = "";
 			try {
 				msg = this.playerSocket.readMsg();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			try {
-				if (msg != null)
+				if (msg != null && !msg.equals(""))
 					interpretMsg(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -52,13 +47,15 @@ public class ServerMsgManager implements Runnable {
 	}
 	
 	private void interpretMsg(String msg) throws IOException {
-		System.out.println("Msg received by client " + this.playerSocket.getId() + ": " + msg);
+		System.out.println("CLIENT " + this.playerSocket.getId() + "received: " + msg);
 		
 		GameCommand cmd = GameCommand.createCommand(msg);
+
+		System.out.println("CLIENT received cmd Type: " + cmd.getType().toString());
 		
 		if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
-			System.out.println("cliente: " + cmd.getType());
-			interpretNewPlayer(cmd);}
+			interpretNewPlayer(cmd);
+		}
 	
 		else if (cmd.getType().equals(CommandType.CLEAR)) 
 			interpretClear(cmd);
@@ -76,16 +73,12 @@ public class ServerMsgManager implements Runnable {
 	
 
 	public void interpretNewPlayer(GameCommand cmd) throws IOException {
-		System.out.println("cliente-entra em interpretNwePlayer: ");
 		String playerId = cmd.getPlayerId();
-		System.out.println("cliente-playerId: " + playerId);
 		int colorId = Integer.parseInt(cmd.getToken(0));
-		System.out.println("cliente-color: " + colorId);
 		Player player = new Player(playerId);
-		System.out.println("cliente-criou player: " );
 		player.setColor(colorId);
 		this.players.put(playerId, player);
-		System.out.println("cliente-informacoes: " + playerId + "-" + colorId);
+		System.out.println("CLIENT got new player: ID-colorID =" + playerId + "-" + colorId);
 	}
 	
 	

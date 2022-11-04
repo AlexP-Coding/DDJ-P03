@@ -46,11 +46,12 @@ public class PlayerMsgManager implements Runnable {
 			String msg = "";
 			try {
 				msg = this.playerSocket.readMsg();
+				if (msg != null && msg != "")
+					this.msgQueue.add(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			this.msgQueue.add(msg);
 		}
 	}
 	
@@ -58,39 +59,31 @@ public class PlayerMsgManager implements Runnable {
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		while (true) {
-			System.out.println("servidor WHILE TRUE");
-			String msg = "";
-			try {
-				msg = in.readLine();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (msg != "") {
-				GameCommand cmd = GameCommand.createCommand(msg);
-				System.out.println("servidor PLAYER MSG MANAGER " + msg);
-				if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
-					String playerId = cmd.getPlayerId();
-					System.out.println("server NEW PLAYER MSG RECEIVED FROM " + playerId);
-					try {
+			while (true) {
+				System.out.println("SERVER awaiting new player msg");
+				String msg = in.readLine();
+				if (msg != null && msg != "") {
+					GameCommand cmd = GameCommand.createCommand(msg);
+					System.out.println("SERVER received msg:" + msg);
+					
+					if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
+						String playerId = cmd.getPlayerId();
+						System.out.println("SERVER received NEW_PLAYER from #" + playerId);
+						
 						playerDetails.addPlayer(playerId, this.socket);
 						this.playerSocket = this.playerDetails.getPlayerSocket(playerId);
 						playerDetails.getPlayerSocket(playerId).setIn(in);
 						playerDetails.getPlayerSocket(playerId).setOut();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						
+						msgQueue.add(msg);
+						System.out.println("SERVER adding message to queue " + msg);
+						break;
 					}
-					msgQueue.add(msg);
-					System.out.println("servidor adding message to queue" + playerId);
-					break;
 				}
 			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }

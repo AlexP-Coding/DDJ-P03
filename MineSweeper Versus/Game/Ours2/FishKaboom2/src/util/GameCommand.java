@@ -31,8 +31,9 @@ public class GameCommand {
 	
 	public GameCommand (String msg) {
 		this.fullMsg = msg;
-		//System.out.println("FULL MESSAGE: " + fullMsg);
+		System.out.println("FULL MESSAGE: " + fullMsg + ".");
 		String[] tokensMsg =  msg.split(GameCommand.SPLITTER);
+		System.out.println("Value of command: " + CommandType.valueOf(tokensMsg[0]) + ".");
 		
 		this.type = CommandType.valueOf(tokensMsg[0]);
 		this.playerId = tokensMsg[1];
@@ -76,12 +77,13 @@ public class GameCommand {
 	// STATIC CREATION OF A COMMAND
 
 	public static GameCommand createCommand(String msg) {
+		System.out.println("Creating a command! " + msg);
 		return new GameCommand(msg);
 	}
 	
 	public static GameCommand createCommand(CommandType type, String playerId, List<String> tokens) {
 		String fullMsg = createCommandMsg(type, playerId, tokens);
-		return new GameCommand(fullMsg);
+		return GameCommand.createCommand(fullMsg);
 	}
 	
 	
@@ -89,7 +91,7 @@ public class GameCommand {
 	
 	public static String createCommandMsg(CommandType type, String playerId, List<String> cmdTokens) {
 		StringBuilder msgBuilder = new StringBuilder();
-		msgBuilder.append(type);
+		msgBuilder.append(type.toString());
 		msgBuilder.append(" ");
 		msgBuilder.append(playerId);
 		
