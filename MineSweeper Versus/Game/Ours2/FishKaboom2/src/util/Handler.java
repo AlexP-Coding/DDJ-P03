@@ -11,7 +11,7 @@ public class Handler {
     private ArrayList<MineButton> adjacentesclickeble = new ArrayList<MineButton>();
 	
 	public void click(MineButton mine) throws IOException {
-	
+		/*
 		int positionx = mine.getPosx();
 		int positiony = mine.getPosy();
 		boolean v = mine.hasBomb();
@@ -44,13 +44,13 @@ public class Handler {
 				adjacentesclickeble.remove(0);
 	            temp.clickButton();
 			}
-			
-			
 		}
+		*/
 		
 	}
 	
 	public void rightClick(MineButton mine) throws IOException {
+		/*
 		if(mine.isCleared() == false) {
 			if(mine.isFlagged() == true) {
 				mine.setFlagged(false);
@@ -65,5 +65,6 @@ public class Handler {
 				System.out.println(" flaged");
 			}
 		}
+		*/
 	}
 }

@@ -51,18 +51,19 @@ public class MineButton extends JButton{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					if(SwingUtilities.isRightMouseButton(e)) {
-						rightClickButton();
-					} else {
-						clickButton();
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				if (handler != null) {
+					// TODO Auto-generated method stub
+					try {
+						if(SwingUtilities.isRightMouseButton(e)) {
+							rightClickButton();
+						} else {
+							clickButton();
+						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}					
+				}	
 			}
 
 			@Override
@@ -280,7 +281,6 @@ public class MineButton extends JButton{
 			Board.getMineButton(px+1,py+1).setCleared(true);
 		}
 		
-//System.out.println("ultimo adjacente: " + adjacentes.size());
 		return adjacentes;
 
 	}

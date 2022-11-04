@@ -19,15 +19,18 @@ public class Board extends JPanel {
 		super();
 		Board.grid = new MineButton[ClientView.X][ClientView.Y];
 		this.makeNewBoard(handler);
-		this.placeMines();
-		this.placeNumbersandSpaces();
+		// FOR PLAYER, WHO NEEDS CLICKS ACKNOWLEDGED
+		// BUT NOT BOARD FILLED
+		if (handler == null) { 
+			this.placeMines();
+			this.placeNumbersandSpaces();
+		}
         this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
 		
 	}
-	
 	
 	//Iniciates a grid of undiscovered mines
 	public void makeNewBoard(Handler handler) throws IOException {
