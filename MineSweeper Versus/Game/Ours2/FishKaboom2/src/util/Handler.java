@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Handler {
 	
-	//private MineButton[][] current = Board.grid ;
 	public int totalFlags = 0;
 	public int totalBombsFounded = 0;
     private ArrayList<MineButton> adjacentes;
