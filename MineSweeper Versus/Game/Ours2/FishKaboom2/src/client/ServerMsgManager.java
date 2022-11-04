@@ -1,82 +1,129 @@
 package client;
 
-import util.CommandConstants;
-import util.GameCommand;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+//import server.GameState.Status;
+import util.Board;
+import util.GameCommand;
+import util.GameConstants;
+import util.MineButton;
+import util.PlayerSocket;
+import util.GameCommand.CommandType;
 
-public class ClientMessageSender {
-
-	String playerId;
-	Socket socket;
-	DataOutputStream out;
-	BufferedReader in;
+public class ServerMsgManager implements Runnable {
+	private PlayerSocket playerSocket;
+	private boolean isRunning;
+	private Board board;
 	
-	public ClientMessageSender(String playerId, Socket socket, BufferedReader in, DataOutputStream out) {
-		this.playerId = playerId;
-		this.socket = socket;
-		this.in = in;
-		this.out = out;
-		System.out.printf("Associated socket to server");
-	}
-
-	public void sendMsg(String msg) throws IOException {
-		out.writeBytes(msg);
-		System.out.printf("Sent msg " + msg);
+	public ServerMsgManager(PlayerSocket socket, Board board) {
+		this.playerSocket = socket;
+		this.board = board;
+		this.isRunning = false;
 	}
 	
-	public void sendMsg(GameCommand cmd) throws IOException {
-		String msg = cmd.getFullMsg();
-		sendMsg(msg);
+	public void setIsRunning(boolean isRunning) {
+		this.isRunning = isRunning;
 	}
 	
-	public int sendNewPlayerMsg() throws IOException {
-		String msg = GameCommand.createCommandMsg(CommandConstants.CMD_NEWPLAYER, this.playerId, null);
-		sendMsg(msg);
+	public void run() {
+		this.isRunning = true;
 		
-		String response;
-		while (true) {
-			response = in.readLine();
-			if (response != null) {
-				System.out.printf("Player acknowleged with code %s %n", response);
-				break;
+		while (this.isRunning) {
+			String msg = "";
+			try {
+				msg = this.playerSocket.readMsg();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			try {
+				interpretMsg(msg);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		int playerCode = Integer.parseInt(response);
-		return playerCode;
 	}
 	
-	public void sendGameStartMsg() throws IOException {
-		String msg = GameCommand.createCommandMsg(CommandConstants.CMD_START , playerId, null);
-		sendMsg(msg);
+	private void interpretMsg(String msg) throws IOException {
+		GameCommand cmd = GameCommand.createCommand(msg);
+		
+		if (cmd.getType().equals(CommandType.NEW_PLAYER))
+			interpretNewPlayer(cmd);
+	
+		else if (cmd.getType().equals(CommandType.CLEAR)) 
+			interpretClear(cmd);
+		
+		else if (cmd.getType().equals(CommandType.FLAG)) 
+			interpretFlag(cmd);
+		
+		else {
+			System.out.println("SERVER received unusable command: " + msg);
+			return;
+		}
+		
+		return;
 	}
 	
-	public void sendClickedSpotMsg(String cmdType, int x, int y) throws IOException {
-		List<String> tokens = 	new ArrayList<String>(
-				Arrays.asList(
-					"" + x, 
-					"" + y)
-			);
-
-		String msg = GameCommand.createCommandMsg(cmdType, playerId, tokens);
-		sendMsg(msg);
+	/*
+	 * Sends new player msg to all players
+	 */
+	public void interpretNewPlayer(GameCommand cmd) throws IOException {
+		/*String playerId = cmd.getPlayerId();
+		int colorId = playerDetails.getPlayer(playerId).getColorId();*/
 	}
 	
-	
-	public void sendClearSpotMsg(int x, int y) throws IOException {
-		sendClickedSpotMsg(CommandConstants.CMD_CLEAR, x, y);
+	/*
+	 * Readies result of clear msg to send to all players
+	 */
+	public void interpretClear(GameCommand cmd) throws IOException {
+		List<String> tokens = cmd.getTokens();
+		String playerId = cmd.getPlayerId();
+		
+		int nrTokens = cmd.getNrTokens();
+		
+		for (int i = 0; i < nrTokens; ) {
+			int x = Integer.parseInt(tokens.get(i));
+			int y = Integer.parseInt(tokens.get(i+1));
+			int val = Integer.parseInt(tokens.get(i+2));
+			i += 3;
+			
+			MineButton spot = board.getMineButton(x, y);
+			if (spot.isCleared() || spot.isFlagged())
+				return;
+			
+			spot.setCleared(true);
+			if (val < 0) {
+				//board.findBomb(x, y);
+				spot.setGridImage("assets/Tilemine.png");
+			}	
+			else if (val == 0)
+				spot.setGridImage("assets/TileEmpty.png");
+			else
+				spot.setGridImage("assets/Tile" + val + ".png");
+			
+		}
+		return;
 	}
 	
-	
-	public void sendFlagMsg(int x, int y) throws IOException {
-		sendClickedSpotMsg(CommandConstants.CMD_FLAG, x, y);
+	/*
+	 * Sends flag msg to all players
+	 */
+	public void interpretFlag(GameCommand cmd) throws IOException {
+		List<String> tokens = cmd.getTokens();
+		String playerId = cmd.getPlayerId();
+		
+		int x = Integer.parseInt(tokens.get(0));
+		int y = Integer.parseInt(tokens.get(1));
+		
+		MineButton spot = board.getMineButton(x, y);
+		
+		if (spot.isFlagged())
+			spot.setImageFlagged();
+		else
+			spot.setGridStyleDefault();
+		
+		spot.setFlagged(!spot.isFlagged());
 	}
 }
