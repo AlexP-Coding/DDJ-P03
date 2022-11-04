@@ -25,7 +25,7 @@ public class ClientView extends JFrame{
 	
 	private Handler handler = new Handler();
 	
-	public ClientView(String username) throws IOException {		
+	public ClientView(String username, String host) throws IOException {		
 		
 		ClientView.setInstance(this);
 				
