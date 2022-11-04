@@ -14,7 +14,10 @@ public class Board extends JPanel {
 	public static MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
-	
+	private int bombsFound = 0;
+	private int bombLimit = 5;
+	private int safeSpotsLeft;
+
 	public Board(Handler handler) throws IOException {		
 		super();
 		Board.grid = new MineButton[ClientView.X][ClientView.Y];
@@ -29,9 +32,30 @@ public class Board extends JPanel {
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
+		this.safeSpotsLeft = ClientView.X * ClientView.Y - ClientView.BOMB_COUNT;
 		
 	}
 	
+	public void findBomb() {
+		this.bombsFound++;
+	}
+	
+	public int getBombsFound() {
+		return this.bombsFound;
+	}
+	
+	public int getBombLimit() {
+		return this.bombLimit;
+	}
+	
+	public void findSafeSpot() {
+		this.safeSpotsLeft--;
+	}
+	
+	public int getSafeSpotsLeft() {
+		return this.safeSpotsLeft;
+	}
+
 	//Iniciates a grid of undiscovered mines
 	public void makeNewBoard(Handler handler) throws IOException {
 		try {
@@ -115,4 +139,5 @@ public class Board extends JPanel {
 	public MineButton[][] getAllMineButton() {
 		return Board.grid;
 	}
+	
 }

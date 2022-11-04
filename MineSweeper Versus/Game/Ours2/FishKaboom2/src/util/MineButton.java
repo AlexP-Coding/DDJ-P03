@@ -237,7 +237,7 @@ public class MineButton extends JButton{
 	}
 	
 	
-	public ArrayList listofadjacenteswithoutBomb() {
+	public List<MineButton> listofAdjacentsWithoutBomb() {
 		int px = this.getPosx();
 		int py = this.getPosy();
 		

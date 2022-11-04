@@ -3,21 +3,27 @@ package server;
 import java.io.*;
 import java.net.*;
 import java.util.Map;
+import java.util.Queue;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import util.Board;
+import util.GameConstants;
 
 public class GameServer {
 	private ServerSocket serversocket;
-	private int numPlayers;
-	private ServerSideConnection player1;
-	private ServerSideConnection player2;
-	Map<Integer, String> players = new TreeMap<Integer,String>();
+	private Queue<String> msgQueue;
+	private PlayerDetails playerDetails;
+	private Board board;
 	
 	public GameServer() {
 		System.out.println("---------GAME SERVER---------");
-		numPlayers = 0;
 		
 		try {
-			serversocket = new ServerSocket(5051);
+			serversocket = new ServerSocket(GameConstants.PORT_DEFAULT);
+			this.playerDetails = new PlayerDetails();
+			this.msgQueue = new ConcurrentLinkedQueue<String>();
+			this.board = new Board(null);
 		} catch (IOException e) {
 			System.out.println("IOException from GameServer Constructor");
 		}
@@ -25,60 +31,23 @@ public class GameServer {
 	
 	public void acceptConnections() {
 		try {
+			System.out.println("Starting board thread");
+			
+			Thread boardThread = new Thread(new MsgQueueManager(this.msgQueue, this.playerDetails, this.board));
+			boardThread.start();
+			
 			System.out.println("Waiting for connections...");
-			while ( numPlayers < 2) {
+			
+			while (playerDetails.getNrPlayers() < playerDetails.getMaxPlayers()) {
 				Socket socket = serversocket.accept();
-				numPlayers++;
-				System.out.println("Player #" + numPlayers + " has connected.");
-				ServerSideConnection ssc = new ServerSideConnection(socket,numPlayers);
-				if (numPlayers == 1) {
-					player1 = ssc;
-				} else {
-					player2 = ssc;
-				}
-				Thread t = new Thread(ssc);
-				t.start();
+				System.out.println("ACCEPTED CONN");
+				Thread playerThread = new Thread(new PlayerMsgManager(socket, this.msgQueue, this.playerDetails));
+				playerThread.start();
 			}
-			System.out.println("We now have 2 players. No longer accepting connections. Thank you, try next time!");
+			System.out.println("We now have" + playerDetails.getNrPlayers() + "player(s). No longer accepting connections.");			
+
 		} catch (IOException e) {
 			System.out.println("IOException from acceptConnections()");
-		}
-	}
-	
-	//we need to create a thread for each player
-	//allow us to identify witch is for player 1 and witch is for player 2
-	private class ServerSideConnection implements Runnable {
-		private Socket s;
-		private DataInputStream dataIn;
-		private DataOutputStream dataOut;
-		private int playerID;
-		
-		public ServerSideConnection(Socket _s, int id) {
-			s = _s;
-			playerID = id;
-			
-			try {
-				dataIn = new DataInputStream(s.getInputStream());
-				dataOut = new DataOutputStream(s.getOutputStream());
-			} catch (IOException e) {
-				System.out.println("IOExecption from run() constructor");
-			}
-		}
-		
-		//instructions that we want to run in a thread
-		public void run() {
-			try {
-				dataOut.writeInt(playerID);
-				//ones the player connects the server immediately sends the player
-				//the ID number they have
-				dataOut.flush();
-				
-				while(true) {
-					//allows the server to send and receiver more stuff
-				}
-			}catch (IOException e) {
-				System.out.println("IOException from run() SSC");
-			}
 		}
 	}
 	
