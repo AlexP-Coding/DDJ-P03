@@ -2,10 +2,16 @@ package client;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JFrame;
 import util.Board;
+import util.GameConstants;
 import util.Handler;
+import util.PlayerSocket;
+import util.Player;
 
 public class ClientView extends JFrame{
 	
@@ -23,13 +29,18 @@ public class ClientView extends JFrame{
 	//ARGUMENTOS DO BOARD TODO
 	private Board board;
 	
-	private Handler handler = new Handler();
+	private Handler handler;
+	
+	// SERVER COMMUNICATION
+	private PlayerSocket playerSocket;
+	
+	private Map<String, Player> players;
 	
 	public ClientView(String username, String host) throws IOException {		
 		
+		// LAYOUT
 		ClientView.setInstance(this);
 				
-		
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
 		this.setSize(Y * WIDTH,X * HEIGHT );
 		this.setVisible(true);
@@ -38,11 +49,22 @@ public class ClientView extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
-		this.board = new Board(handler);
+		// Socket communication
+		playerSocket = new PlayerSocket(username, GameConstants.SOCKET_SENDER, host, GameConstants.PORT_DEFAULT);
+		playerSocket.setIn();
+		playerSocket.setOut();
+		playerSocket.sendNewPlayerMsg();
 		
+		Thread serverThread = new Thread(new ServerMsgManager(playerSocket, board, players));
+		serverThread.start();
+		
+		handler = new Handler(playerSocket);
+		
+		this.board = new Board(handler);
 		this.add(board, BorderLayout.CENTER);
 		setResizable(false);
 		this.setVisible(true);
+		
 	}
 	
 	public static void setInstance(ClientView instance) {

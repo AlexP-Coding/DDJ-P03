@@ -2,12 +2,14 @@ package client;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 //import server.GameState.Status;
 import util.Board;
 import util.GameCommand;
 import util.GameConstants;
 import util.MineButton;
+import util.Player;
 import util.PlayerSocket;
 import util.GameCommand.CommandType;
 
@@ -15,11 +17,13 @@ public class ServerMsgManager implements Runnable {
 	private PlayerSocket playerSocket;
 	private boolean isRunning;
 	private Board board;
+	private Map<String, Player> players;
 	
-	public ServerMsgManager(PlayerSocket socket, Board board) {
+	public ServerMsgManager(PlayerSocket socket, Board board, Map<String, Player> players) {
 		this.playerSocket = socket;
 		this.board = board;
 		this.isRunning = false;
+		this.players = players;
 	}
 	
 	public void setIsRunning(boolean isRunning) {
@@ -38,7 +42,8 @@ public class ServerMsgManager implements Runnable {
 				e.printStackTrace();
 			}
 			try {
-				interpretMsg(msg);
+				if (msg != null)
+					interpretMsg(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -47,6 +52,8 @@ public class ServerMsgManager implements Runnable {
 	}
 	
 	private void interpretMsg(String msg) throws IOException {
+		System.out.println("Msg received by client " + this.playerSocket.getId() + ": " + msg);
+		
 		GameCommand cmd = GameCommand.createCommand(msg);
 		
 		if (cmd.getType().equals(CommandType.NEW_PLAYER))
@@ -59,27 +66,27 @@ public class ServerMsgManager implements Runnable {
 			interpretFlag(cmd);
 		
 		else {
-			System.out.println("SERVER received unusable command: " + msg);
+			System.out.println("CLIENT received unusable command: " + msg);
 			return;
 		}
 		
 		return;
 	}
 	
-	/*
-	 * Sends new player msg to all players
-	 */
+
 	public void interpretNewPlayer(GameCommand cmd) throws IOException {
-		/*String playerId = cmd.getPlayerId();
-		int colorId = playerDetails.getPlayer(playerId).getColorId();*/
+		String playerId = cmd.getPlayerId();
+		int colorId = Integer.parseInt(cmd.getToken(0));
+		Player player = new Player(playerId);
+		player.setColor(colorId);
+		this.players.put(playerId, player);
 	}
 	
-	/*
-	 * Readies result of clear msg to send to all players
-	 */
+	
 	public void interpretClear(GameCommand cmd) throws IOException {
 		List<String> tokens = cmd.getTokens();
 		String playerId = cmd.getPlayerId();
+		Player player = this.players.get(playerId);
 		
 		int nrTokens = cmd.getNrTokens();
 		
@@ -103,13 +110,11 @@ public class ServerMsgManager implements Runnable {
 			else
 				spot.setGridImage("assets/Tile" + val + ".png");
 			
+			player.updateScore(val);
 		}
 		return;
 	}
 	
-	/*
-	 * Sends flag msg to all players
-	 */
 	public void interpretFlag(GameCommand cmd) throws IOException {
 		List<String> tokens = cmd.getTokens();
 		String playerId = cmd.getPlayerId();
