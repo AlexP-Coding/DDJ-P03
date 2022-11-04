@@ -11,12 +11,16 @@ public class GameConstants {
 	
 	public static final int NR_BOMBS = 50;
 	
+	public static final int BOMB_PENALTY = -5;
+	public static final int FISH_BONUS = 100;
+	public static final int SCORE_NONE = -30;
 	
 	// COMMUNICATION CONSTANTS
 	public static final int PORT_DEFAULT = 5000;
 	public static final int SOCKET_SENDER = 3;
 	public static final int SOCKET_RECEIVER = 5;
 	public static final int SOCKET_MULTITASKER = 5;
+	public static final String SERVER_ID = "SERVER";
 	
 	
 	

@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import util.Board;
+import util.GameConstants;
 import util.MineButton;
 import util.Player;
 import util.PlayerSocket;
@@ -45,8 +46,8 @@ public class ClientView extends JFrame{
 		
 		ClientView.setInstance(this);
 		
-		//playerSocket = new PlayerSocket(username, host, PORT_DEFAULT);
-		//player = playerSocket.getPlayer();
+		playerSocket = new PlayerSocket(username, GameConstants.SOCKET_SENDER, host, PORT_DEFAULT);
+		player = playerSocket.getPlayer();
 				
 		this.setTitle("Hello " + username + "! Good Luck at Fish-Kaboom!");
 		this.setSize(Y * WIDTH,X * HEIGHT );
@@ -56,11 +57,14 @@ public class ClientView extends JFrame{
 		this.setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
 		
-		this.board = new Board();
+		this.board = new Board(this.playerSocket);
 		
 		this.add(board, BorderLayout.CENTER);
 		setResizable(false);
 		this.setVisible(true);
+
+		Thread serverThread = new Thread(new ServerMsgManager(playerSocket, board));
+		serverThread.start();
 	}
 	
 	public static BufferedImage resizeImage(BufferedImage originalImage, int width, int height) throws IOException {

@@ -26,7 +26,7 @@ public class MineButton extends JButton{
 	private boolean cleared;
 	private int bombNearby;
 	private BufferedImage image;
-	private boolean isJFrame;
+	private PlayerSocket playerSocket;
 	
 	public MineButton(int x, int y) throws IOException{
 		super();
@@ -36,7 +36,6 @@ public class MineButton extends JButton{
 		flagged = false;
 		cleared = false;
 		bombNearby =0;
-		this.isJFrame = true;
 		
 		
 		this.setGridStyleDefault();
@@ -53,14 +52,14 @@ public class MineButton extends JButton{
 //		this.add(new Box.Filler(minSize, prefSize, maxSize));
 	}
 	
-	public MineButton(int x, int y, boolean isJFrame) {
+	public MineButton(int x, int y, PlayerSocket playerSocket) {
 		this.posx=x;
 		this.posy=y;
 		this.bomb = false;
 		flagged = false;
 		cleared = false;
 		bombNearby =0;
-		this.isJFrame = isJFrame;
+		this.playerSocket = playerSocket;
 	}
 	
 //	public void setGridStyleDefault() throws IOException {
@@ -74,7 +73,10 @@ public class MineButton extends JButton{
 		this.setIcon(img);
 	}
 	
-
+	public void setPlayerSocket(PlayerSocket playerSocket) {
+		this.playerSocket = playerSocket;
+	}
+	
 	public boolean hasBomb() {
 		return bomb;
 	}
@@ -93,6 +95,10 @@ public class MineButton extends JButton{
 
 	public boolean isCleared() {
 		return cleared;
+	}
+	
+	public void setCleared(boolean cleared) {
+		this.cleared = cleared;
 	}
 
 	public int getBombNearby() {
@@ -127,38 +133,7 @@ public class MineButton extends JButton{
 	
 	public void setImageWhenClicked() throws IOException {
 		if(!isCleared()) {
-			if(isFlagged())
-				setGridImage("assets/TileFlag.png");
-
-			else if(hasBomb())
-				setGridImage("assets/Tilemine.png");
-		
-			else if(getBombNearby() == 0) 
-					setGridImage("assets/TileEmpty.png");
-			
-			else if(getBombNearby() == 1) 
-				setGridImage("assets/Tile1.png");
-			
-			else if(getBombNearby() == 2) 
-				setGridImage("assets/Tile2.png");
-			
-			else if(getBombNearby() == 3) 
-				setGridImage("assets/Tile3.png");
-			
-			else if(getBombNearby() == 4) 
-				setGridImage("assets/Til4.png");
-			
-			else if(getBombNearby() == 5) 
-				setGridImage("assets/Tile5.png");
-			
-			else if(getBombNearby() == 6) 
-				setGridImage("assets/Tile6.png");
-			
-			else if(getBombNearby() == 7) 
-				setGridImage("assets/Tile7.png");
-			
-			else if(getBombNearby() == 8) 
-				setGridImage("assets/Tile8.png");
+			this.playerSocket.sendClearSpotMsg(posx, posy);
 		}
 	}
 	

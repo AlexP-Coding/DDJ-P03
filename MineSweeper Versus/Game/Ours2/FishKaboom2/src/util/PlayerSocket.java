@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import util.GameCommand.CommandType;
 
 public class PlayerSocket {
 
@@ -60,6 +65,49 @@ public class PlayerSocket {
 	
 	public String readMsg() throws IOException {
 		return this.socketInfo.readMsg();
+	}
+	
+	
+	public int sendNewPlayerMsg() throws IOException {
+		String msg = GameCommand.createCommandMsg(CommandType.NEW_PLAYER, this.player.getId(), null);
+		sendMsg(msg);
+		
+		String response;
+		while (true) {
+			response = readMsg();
+			if (response != null) {
+				System.out.printf("Player acknowleged with code %s %n", response);
+				break;
+			}
+		}
+		int playerCode = Integer.parseInt(response);
+		return playerCode;
+	}
+	
+	public void sendGameStartMsg() throws IOException {
+		String msg = GameCommand.createCommandMsg(CommandType.START , player.getId(), null);
+		sendMsg(msg);
+	}
+	
+	public void sendClickedSpotMsg(CommandType cmdType, int x, int y) throws IOException {
+		List<String> tokens = 	new ArrayList<String>(
+				Arrays.asList(
+					"" + x, 
+					"" + y)
+			);
+
+		String msg = GameCommand.createCommandMsg(cmdType, player.getId(), tokens);
+		sendMsg(msg);
+	}
+	
+	
+	public void sendClearSpotMsg(int x, int y) throws IOException {
+		sendClickedSpotMsg(CommandType.CLEAR, x, y);
+	}
+	
+	
+	public void sendFlagMsg(int x, int y) throws IOException {
+		sendClickedSpotMsg(CommandType.FLAG, x, y);
 	}
 	
 }

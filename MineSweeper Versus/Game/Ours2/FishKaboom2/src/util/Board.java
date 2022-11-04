@@ -23,6 +23,10 @@ public class Board extends JPanel {
 	private MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
+	private int bombsFound = 0;
+	private int bombLimit = 10;
+	private int safeSpotsLeft;
+	private PlayerSocket playerSocket = null;
 	
 	public Board() throws IOException {		
 		super();
@@ -34,8 +38,19 @@ public class Board extends JPanel {
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
-		
-		
+		this.safeSpotsLeft = ClientView.X * ClientView.Y - ClientView.BOMB_COUNT;
+	}
+	
+	public Board(PlayerSocket playerSocket) throws IOException {		
+		super();
+		this.grid = new MineButton[ClientView.X][ClientView.Y];
+		this.makeNewBoard();
+        this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
+        this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
+		this.setOpaque(true);
+		this.setBackground(Color.BLACK);
+		this.safeSpotsLeft = ClientView.X * ClientView.Y - ClientView.BOMB_COUNT;
+		this.playerSocket = playerSocket;
 	}
 	
 	
@@ -44,7 +59,12 @@ public class Board extends JPanel {
 		try {
 		for(int i=0; i< ClientView.X; i++) { // ROWS
 			for(int j=0; j< ClientView.Y; j++) { // COLUMNS
-				MineButton button = new MineButton(i,j);
+				MineButton button;
+				if (this.playerSocket == null)
+					button = new MineButton(i,j);
+				else
+					button = new MineButton(i,j, this.playerSocket);
+				
 				GridBagConstraints constraint = new GridBagConstraints();
 				constraint.gridx = i;
 				constraint.gridy = j;
@@ -115,40 +135,34 @@ public class Board extends JPanel {
 		}
 	}
 	
+	public void findBomb(int x, int y) throws IOException {
+		this.bombsFound++;
+		setImageWhenClicked(x, y);
+	}
+	
+	public int getBombsFound() {
+		return this.bombsFound;
+	}
+	
+	public int getBombLimit() {
+		return this.bombLimit;
+	}
+	
+	public void findSafeSpot (int x, int y) throws IOException {
+		this.safeSpotsLeft--;
+		setImageWhenClicked(x,y);
+	}
+	
+	public int getSafeSpotsLeft() {
+		return this.safeSpotsLeft;
+	}
+	
 	public void setImageWhenClicked(int x, int y) throws IOException {
-		if(!grid[x][y].isCleared()) {
-			if(grid[x][y].isFlagged())
-				grid[x][y].setGridImage("assets/TileFlag.png");
-
-			else if(grid[x][y].hasBomb())
-				grid[x][y].setGridImage("assets/Tilemine.png");
+		if (this.playerSocket == null)
+			return;
 		
-			else if(grid[x][y].getBombNearby() == 0) 
-					grid[x][y].setGridImage("assets/TileEmpty.png");
-			
-			else if(grid[x][y].getBombNearby() == 1) 
-				grid[x][y].setGridImage("assets/Tile1.png");
-			
-			else if(grid[x][y].getBombNearby() == 2) 
-				grid[x][y].setGridImage("assets/Tile2.png");
-			
-			else if(grid[x][y].getBombNearby() == 3) 
-				grid[x][y].setGridImage("assets/Tile3.png");
-			
-			else if(grid[x][y].getBombNearby() == 4) 
-				grid[x][y].setGridImage("assets/Til4.png");
-			
-			else if(grid[x][y].getBombNearby() == 5) 
-				grid[x][y].setGridImage("assets/Tile5.png");
-			
-			else if(grid[x][y].getBombNearby() == 6) 
-				grid[x][y].setGridImage("assets/Tile6.png");
-			
-			else if(grid[x][y].getBombNearby() == 7) 
-				grid[x][y].setGridImage("assets/Tile7.png");
-			
-			else if(grid[x][y].getBombNearby() == 8) 
-				grid[x][y].setGridImage("assets/Tile8.png");
+		if(!grid[x][y].isCleared()) {
+			this.playerSocket.sendClearSpotMsg(x, y);
 		}
 	}
 	

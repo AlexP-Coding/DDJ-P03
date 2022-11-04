@@ -15,23 +15,31 @@ import util.PlayerSocket;
 public class PlayerDetails {
 	
 	private int nrPlayers;
+	private int maxPlayers;
 	private List<PlayerSocket> playersList;
 	private Map<String, PlayerSocket> playersMap;
 	
 	public PlayerDetails() {
 		this.nrPlayers = 0;
+		this.maxPlayers = 1;
 		this.playersList = new ArrayList<PlayerSocket>();
+		this.playersMap = new HashMap<String, PlayerSocket>();
 	}
 	
 	public int getNrPlayers() {
 		return this.nrPlayers;
 	}
 	
+	public int getMaxPlayers() {
+		return this.maxPlayers;
+	}
+	
 	public List<PlayerSocket> getPlayers() {
 		return this.playersList;
 	}
 	
-	public void addPlayer(String id, Socket socket) 
+	// Returns player color Id
+	public int addPlayer(String id, Socket socket) 
 			throws IOException {
 		
 		this.nrPlayers++;
@@ -41,6 +49,8 @@ public class PlayerDetails {
 		
 		this.playersList.add(playerSocket);
 		this.playersMap.put(id, playerSocket);
+		
+		return playerSocket.getPlayer().getColorId();
 	}
 	
 	public PlayerSocket getPlayerSocket(String id) {
@@ -48,7 +58,11 @@ public class PlayerDetails {
 	}
 	
 	public Player getPlayer(String id) {
-		return this.playersMap.get(id).getPlayer();
+		PlayerSocket playerSocket = this.getPlayerSocket(id);
+		if (playerSocket != null)
+			return this.playersMap.get(id).getPlayer();
+		else
+			return null;
 	}
 	
 	/*

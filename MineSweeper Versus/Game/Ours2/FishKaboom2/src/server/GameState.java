@@ -38,7 +38,7 @@ public class GameState {
 	}
 	
 	public Status getStatus() {
-		return this.getStatus();
+		return this.status;
 	}
 	
 	public void startGame() {

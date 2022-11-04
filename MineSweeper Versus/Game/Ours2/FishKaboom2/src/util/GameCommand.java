@@ -23,6 +23,7 @@ public class GameCommand {
 		NEW_PLAYER,
 		START,
 		CLEAR,
+		UPDATE_SCORE,
 		FLAG,
 		BOMB,
 		MAXBOMBS;
@@ -111,6 +112,14 @@ public class GameCommand {
 		return cmdMsg;
 	}
 
+	public static String createMsgForPosition(CommandType type, String playerId, int x, int y, int value) {
+		List<String> tokens = new ArrayList<String>();
+		tokens.add("" + x);
+		tokens.add("" + y);
+		tokens.add("" + value);
+		return GameCommand.createCommandMsg(type, playerId, tokens);
+	}
+	
 	public static String createMsgForPosition(CommandType type, String playerId, int x, int y) {
 		List<String> tokens = new ArrayList<String>();
 		tokens.add("" + x);
@@ -124,28 +133,32 @@ public class GameCommand {
 		return GameCommand.createCommandMsg(CommandType.NEW_PLAYER, playerId, tokens);		
 	}
 
+	// START playerJeny
 	public static String createMsgGameStart(String playerId) {
 		return GameCommand.createCommandMsg(CommandType.START, playerId, null);		
 	}
 	
-	public static String createMsgBombFound(String playerId, int x, int y) {
-		return GameCommand.createCommandMsg(CommandType.BOMB, playerId, null);	
+	// BOMB playerJeny 3 4 20
+	public static String createMsgBombFound(String playerId, int x, int y, int value){
+		return GameCommand.createMsgForPosition(CommandType.BOMB, playerId, x, y, value);	
 	}
 	
-	public static String createMsgUpdateScore(String playerId, int value) {
-		List<String> tokens = new ArrayList<String>();
-		tokens.add("" + value);
-		return GameCommand.createCommandMsg(CommandType.BOMB, playerId, tokens);	
-	}
-	
+	// CLEAR playerJeny 3 4
 	public static String createMsgClearSpace(String playerId, int x, int y) {
 		return GameCommand.createMsgForPosition(CommandType.CLEAR, playerId, x, y);	
 	}
 	
+	// CLEAR playerJeny 3 4 20
+	public static String createMsgClearSpace(String playerId, int x, int y, int value) {
+		return GameCommand.createMsgForPosition(CommandType.CLEAR, playerId, x, y, value);
+	}
+	
+	// FLAG playerJeny 3 4
 	public static String createMsgFlagSpace(String playerId, int x, int y) {
 		return GameCommand.createMsgForPosition(CommandType.FLAG, playerId, x, y);	
 	}
 	
+	// BOMBMAX server
 	public static String createMsgBombMax(String playerId) {
 		return GameCommand.createCommandMsg(CommandType.MAXBOMBS, playerId, null);
 	}

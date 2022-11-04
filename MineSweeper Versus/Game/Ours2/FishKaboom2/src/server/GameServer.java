@@ -27,6 +27,8 @@ public class GameServer {
 		try {
 			this.serversocket = new ServerSocket(GameConstants.PORT_DEFAULT);
 			this.msgQueue = new ConcurrentLinkedQueue<String>();
+			this.gameState = new GameState();
+			this.playerDetails = new PlayerDetails();
 		} catch (IOException e) {
 			System.out.println("IOException from GameServer Constructor");
 		}
@@ -34,18 +36,20 @@ public class GameServer {
 	
 	public void acceptConnections() {
 		Thread boardThread = new Thread(new MsgQueueManager(this.msgQueue, this.playerDetails, this.gameState));
-		
+		boardThread.start();
 		
 		try {
 			System.out.println("Waiting for connections...");
-			while (playerDetails.getNrPlayers() < 2 || gameState.getStatus().equals(Status.STARTED)) {
+			while (playerDetails.getNrPlayers() < playerDetails.getMaxPlayers() && !gameState.getStatus().equals(Status.STARTED)) {
 				Socket socket = serversocket.accept();
+				System.out.println("ACCEPTED CONN");
 				Thread playerThread = new Thread(new PlayerMsgManager(socket, this.msgQueue, this.playerDetails));
 				playerThread.start();
 			}
-			System.out.println("We now have 2 players. No longer accepting connections. Thank you, try next time!");
+			gameState.setStatus(Status.STARTED);
+			System.out.println("We now have" + playerDetails.getNrPlayers() + "player(s). No longer accepting connections.");
 		} catch (IOException e) {
-			System.out.println("IOException from acceptConnections()");
+			e.printStackTrace();
 		}
 	}
 }

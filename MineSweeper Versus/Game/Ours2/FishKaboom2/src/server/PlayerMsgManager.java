@@ -77,6 +77,7 @@ public class PlayerMsgManager implements Runnable {
 					System.out.println("NEW PLAYER MSG RECEIVED FROM " + playerId);
 					try {
 						playerDetails.addPlayer(playerId, this.socket);
+						this.playerSocket = this.playerDetails.getPlayerSocket(playerId);
 						playerDetails.getPlayerSocket(playerId).setIn(in);
 						playerDetails.getPlayerSocket(playerId).setOut();
 					} catch (IOException e) {
