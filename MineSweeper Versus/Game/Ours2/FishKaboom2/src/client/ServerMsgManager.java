@@ -56,8 +56,9 @@ public class ServerMsgManager implements Runnable {
 		
 		GameCommand cmd = GameCommand.createCommand(msg);
 		
-		if (cmd.getType().equals(CommandType.NEW_PLAYER))
-			interpretNewPlayer(cmd);
+		if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
+			System.out.println("cliente: " + cmd.getType());
+			interpretNewPlayer(cmd);}
 	
 		else if (cmd.getType().equals(CommandType.CLEAR)) 
 			interpretClear(cmd);
@@ -75,11 +76,16 @@ public class ServerMsgManager implements Runnable {
 	
 
 	public void interpretNewPlayer(GameCommand cmd) throws IOException {
+		System.out.println("cliente-entra em interpretNwePlayer: ");
 		String playerId = cmd.getPlayerId();
+		System.out.println("cliente-playerId: " + playerId);
 		int colorId = Integer.parseInt(cmd.getToken(0));
+		System.out.println("cliente-color: " + colorId);
 		Player player = new Player(playerId);
+		System.out.println("cliente-criou player: " );
 		player.setColor(colorId);
 		this.players.put(playerId, player);
+		System.out.println("cliente-informacoes: " + playerId + "-" + colorId);
 	}
 	
 	

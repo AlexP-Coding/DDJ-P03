@@ -31,9 +31,12 @@ public class GameCommand {
 	
 	public GameCommand (String msg) {
 		this.fullMsg = msg;
+		//System.out.println("FULL MESSAGE: " + fullMsg);
 		String[] tokensMsg =  msg.split(GameCommand.SPLITTER);
+		
 		this.type = CommandType.valueOf(tokensMsg[0]);
 		this.playerId = tokensMsg[1];
+		//System.out.println("token nameid: " + tokensMsg[1]);
 		this.tokens = new ArrayList<String>();
 		for (int i = 2; i < tokensMsg.length; i++)
 			this.tokens.add(tokensMsg[i]);

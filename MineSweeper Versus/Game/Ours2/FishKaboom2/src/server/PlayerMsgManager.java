@@ -63,6 +63,7 @@ public class PlayerMsgManager implements Runnable {
 			e1.printStackTrace();
 		}
 		while (true) {
+			System.out.println("servidor WHILE TRUE");
 			String msg = "";
 			try {
 				msg = in.readLine();
@@ -72,9 +73,10 @@ public class PlayerMsgManager implements Runnable {
 			}
 			if (msg != "") {
 				GameCommand cmd = GameCommand.createCommand(msg);
+				System.out.println("servidor PLAYER MSG MANAGER " + msg);
 				if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
 					String playerId = cmd.getPlayerId();
-					System.out.println("NEW PLAYER MSG RECEIVED FROM " + playerId);
+					System.out.println("server NEW PLAYER MSG RECEIVED FROM " + playerId);
 					try {
 						playerDetails.addPlayer(playerId, this.socket);
 						this.playerSocket = this.playerDetails.getPlayerSocket(playerId);
@@ -85,6 +87,7 @@ public class PlayerMsgManager implements Runnable {
 						e.printStackTrace();
 					}
 					msgQueue.add(msg);
+					System.out.println("servidor adding message to queue" + playerId);
 					break;
 				}
 			}

@@ -32,6 +32,7 @@ class MsgQueueManager implements Runnable {
 			try {
 				String msg = "";
 				msg = this.msgQueue.poll();
+				//System.out.println("run methoth: " + msg);
 				if (msg != null) 
 					interpretMsg(msg);
 			}
@@ -43,11 +44,13 @@ class MsgQueueManager implements Runnable {
 	
 	public void interpretMsg(String msg) throws IOException {
 		GameCommand cmd = GameCommand.createCommand(msg);
+		System.out.println("SERVIDOR FULL MESSAGE: " + msg);
 		
 		// NEW_PLAYER is the only command that must also be taken care of
 		// in the PlayerMsgManager
-		if (cmd.getType().equals(CommandType.NEW_PLAYER))
-			interpretNewPlayer(cmd);
+		if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
+			System.out.println("if passed: " + cmd.getType());
+			interpretNewPlayer(cmd);}
 	
 		else if (cmd.getType().equals(CommandType.CLEAR)) 
 			interpretClear(cmd);
@@ -68,10 +71,13 @@ class MsgQueueManager implements Runnable {
 	 */
 	public void interpretNewPlayer(GameCommand cmd) throws IOException {
 		String playerId = cmd.getPlayerId();
+		System.out.println("interpretNewPlayer: " + playerId);
 		int colorId = playerDetails.getPlayer(playerId).getColorId();
-		
+		System.out.println("color: " + colorId);
 		String newMsg = GameCommand.createMsgNewPlayer(playerId, colorId);
+		System.out.println("criou");
 		this.playerDetails.sendMsgToAllPlayers(newMsg);	
+		System.out.println("enviou");
 	}
 	
 	/*

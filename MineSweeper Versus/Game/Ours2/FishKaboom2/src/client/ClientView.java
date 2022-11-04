@@ -2,6 +2,7 @@ package client;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -56,6 +57,8 @@ public class ClientView extends JFrame{
 		playerSocket.setIn();
 		playerSocket.setOut();
 		playerSocket.sendNewPlayerMsg();
+		
+		players = new HashMap<String,Player>();
 		
 		Thread serverThread = new Thread(new ServerMsgManager(playerSocket, board, players));
 		serverThread.start();
