@@ -77,7 +77,7 @@ public class GameCommand {
 	// STATIC CREATION OF A COMMAND
 
 	public static GameCommand createCommand(String msg) {
-		System.out.println("Creating a command! " + msg);
+		System.out.println("Creating a command (may not be to send): " + msg);
 		return new GameCommand(msg);
 	}
 	

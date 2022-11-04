@@ -42,13 +42,13 @@ class MsgQueueManager implements Runnable {
 	}
 	
 	public void interpretMsg(String msg) throws IOException {
+		System.out.println("SERVER QueueManager retrieved: " + msg + ". Creating command to interpret...");
 		GameCommand cmd = GameCommand.createCommand(msg);
-		System.out.println("SERVER QueueManager retrieved: " + msg);
 		
 		// NEW_PLAYER is the only command that must also be taken care of
 		// in the PlayerMsgManager
+		System.out.println("Type: " + cmd.getType().toString());
 		if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
-			System.out.println("if passed: " + cmd.getType());
 			interpretNewPlayer(cmd);}
 	
 		else if (cmd.getType().equals(CommandType.CLEAR)) 

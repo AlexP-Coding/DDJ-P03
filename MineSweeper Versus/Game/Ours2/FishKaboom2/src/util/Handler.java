@@ -15,16 +15,20 @@ public class Handler {
 		int positionx = mine.getPosx();
 		int positiony = mine.getPosy();
 		
-		if(!mine.isFlagged() && !mine.isCleared())
+		if(!mine.isFlagged() && !mine.isCleared()) {
+			System.out.println("CLIENT sending clear spot msg");
 			playerSocket.sendClearSpotMsg(positionx, positiony);
+		}
 	}
 	
 	public void rightClick(MineButton mine) throws IOException {
 		int positionx = mine.getPosx();
 		int positiony = mine.getPosy();
 		
-		if (!mine.isCleared())
+		if (!mine.isCleared()) {
+			System.out.println("CLIENT sending clear spot msg");			
 			playerSocket.sendFlagMsg(positionx, positiony);
+		}
 			
 	}
 }

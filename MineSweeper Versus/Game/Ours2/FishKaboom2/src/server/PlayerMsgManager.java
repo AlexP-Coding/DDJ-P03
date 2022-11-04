@@ -46,7 +46,7 @@ public class PlayerMsgManager implements Runnable {
 			String msg = "";
 			try {
 				msg = this.playerSocket.readMsg();
-				if (msg != null && msg != "")
+				if (msg != null && !msg.equals(""))
 					this.msgQueue.add(msg);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -62,9 +62,9 @@ public class PlayerMsgManager implements Runnable {
 			while (true) {
 				System.out.println("SERVER awaiting new player msg");
 				String msg = in.readLine();
-				if (msg != null && msg != "") {
+				if (msg != null && !msg.equals("")) {
+					System.out.println("SERVER PlayerMsgManager received msg:" + msg);
 					GameCommand cmd = GameCommand.createCommand(msg);
-					System.out.println("SERVER received msg:" + msg);
 					
 					if (cmd.getType().equals(CommandType.NEW_PLAYER)) {
 						String playerId = cmd.getPlayerId();
