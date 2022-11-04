@@ -36,7 +36,9 @@ public class ClientView extends JFrame{
 	
 	private Map<String, Player> players;
 	
-	public ClientView(String username, String host) throws IOException {		
+	public ClientView(String username, String host) throws IOException {
+
+		System.out.println("---------GAME CLIENT---------");
 		
 		// LAYOUT
 		ClientView.setInstance(this);
