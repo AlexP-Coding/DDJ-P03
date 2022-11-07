@@ -11,6 +11,7 @@ import util.PlayerSocket;
 import util.GameCommand.CommandType;
 import util.GameConstants;
 import util.MineButton;
+import util.Player;
 
 class MsgQueueManager implements Runnable {
 	
@@ -73,9 +74,18 @@ class MsgQueueManager implements Runnable {
 		String playerId = cmd.getPlayerId();
 		int colorId = playerDetails.getPlayer(playerId).getColorId();
 		String newMsg = GameCommand.createMsgNewPlayer(playerId, colorId);
-		System.out.println("SERVER sending msg START: " + newMsg);
+		System.out.println("SERVER sending msg to prev players START: " + newMsg);
 		this.playerDetails.sendMsgToAllPlayers(newMsg);	
-		System.out.println("SERVER sending msg DONE: " + newMsg);
+		System.out.println("SERVER sending msg to prev players DONE: " + newMsg);
+		List<PlayerSocket> players = playerDetails.getPlayers();
+		for (int i = 0; i < playerDetails.getNrPlayers(); i++) {
+			Player prevPlayer = players.get(i).getPlayer();
+			if (prevPlayer.getId().equals(playerId))
+				continue;
+			newMsg = GameCommand.createMsgNewPlayer(prevPlayer.getId(), prevPlayer.getColorId());
+			PlayerSocket newPlayerSocket = this.playerDetails.getPlayerSocket(playerId);
+			newPlayerSocket.sendMsg(newMsg);
+		}
 	}
 	
 	/*
@@ -114,22 +124,30 @@ class MsgQueueManager implements Runnable {
 			return;
 		}
 		else if (nrBombsAdjacent == 0) {
-			List<String> spotAndValueTokens = new ArrayList<String>();
+			board.findSafeSpot();
+			spot.setCleared(true);
 
-			List<MineButton> adjacentsClickable = new ArrayList<MineButton>();
-			List<MineButton> adjacents = spot.listofAdjacentsWithoutBomb();
+			List<MineButton> adjacentsClickable = spot.listofAdjacentsWithoutBomb();
+			String newMsg = GameCommand.createMsgClearSpace(playerId, x, y, nrBombsAdjacent);
+			System.out.println("Sending to all players: " + newMsg);
+			this.playerDetails.sendMsgToAllPlayers(newMsg);
 			
-			if (!adjacents.isEmpty()) {
-				for(int i=0; i<adjacents.size(); i++) {
-					adjacentsClickable.add(adjacents.get(i));
+			System.out.println("Gathering clickable adjacents");
+			int nrAdjacents = adjacentsClickable.size();
+			System.out.println(nrAdjacents + " CLICKABLE ADJACENTS");
+			for (int i = 0; i < nrAdjacents; i++) {
+				MineButton temp = adjacentsClickable.get(i);
+				System.out.println("New adjacent is at x:" + temp.posx + " y:" + temp.posy);
+				String msg2 = GameCommand.createMsgClearSpace(playerId, temp.posx, temp.posy)
+							.replaceAll("\n", "");
+				System.out.println("Gathering new clickable adjacent: " + msg2);
+				try {
+					interpretMsg(msg2);					
 				}
-			}
-			
-			while (!adjacentsClickable.isEmpty()) {
-				MineButton temp = adjacentsClickable.get(0);
-				adjacentsClickable.remove(0);
-			}
-			
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}	
 		}
 		return;
 	}
