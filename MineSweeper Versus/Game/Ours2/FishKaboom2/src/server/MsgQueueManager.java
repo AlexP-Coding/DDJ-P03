@@ -121,6 +121,21 @@ class MsgQueueManager implements Runnable {
 			board.findSafeSpot();
 			String newMsg = GameCommand.createMsgClearSpace(playerId, x, y, nrBombsAdjacent);
 			this.playerDetails.sendMsgToAllPlayers(newMsg);
+			if (this.board.isFirstClick() == true) {
+				this.board.setIsFirstClick(false);
+				List<MineButton> adjacentsClickable = spot.listofAdjacentsWithoutBomb();
+				System.out.println("Gathering clickable adjacents");
+				int nrAdjacents = adjacentsClickable.size();
+				System.out.println(nrAdjacents + " CLICKABLE ADJACENTS");
+				for (int i = 0; i < nrAdjacents; i++) {
+					MineButton temp = adjacentsClickable.get(i);
+					System.out.println("New adjacent is at x:" + temp.posx + " y:" + temp.posy);
+					String msg2 = GameCommand.createMsgClearSpace(playerId, temp.posx, temp.posy)
+								.replaceAll("\n", "");
+					System.out.println("Gathering new clickable adjacent: " + msg2);
+					interpretMsg(msg2);					
+				}
+			}
 			return;
 		}
 		else if (nrBombsAdjacent == 0) {
@@ -147,7 +162,7 @@ class MsgQueueManager implements Runnable {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-			}	
+			}
 		}
 		return;
 	}

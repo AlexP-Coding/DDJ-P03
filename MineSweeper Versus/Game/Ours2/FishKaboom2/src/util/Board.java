@@ -17,6 +17,7 @@ public class Board extends JPanel {
 	private int bombsFound = 0;
 	private int bombLimit = 5;
 	private int safeSpotsLeft;
+	private boolean isFirstClick = true;
 
 	public Board(Handler handler) throws IOException {		
 		super();
@@ -36,6 +37,13 @@ public class Board extends JPanel {
 		
 	}
 	
+	public boolean isFirstClick() {
+		return this.isFirstClick;
+	}
+	
+	public void setIsFirstClick(boolean isFC) {
+		this.isFirstClick = isFC;
+	}
 	public void findBomb() {
 		this.bombsFound++;
 	}
