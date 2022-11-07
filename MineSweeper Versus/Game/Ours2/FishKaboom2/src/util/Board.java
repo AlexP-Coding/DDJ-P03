@@ -40,10 +40,11 @@ public class Board extends JPanel {
 	public boolean isFirstClick() {
 		return this.isFirstClick;
 	}
-	
+
 	public void setIsFirstClick(boolean isFC) {
 		this.isFirstClick = isFC;
 	}
+	
 	public void findBomb() {
 		this.bombsFound++;
 	}

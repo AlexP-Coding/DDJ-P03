@@ -79,8 +79,16 @@ public class ClientView extends JFrame implements ActionListener{
 		this.add(panel, BorderLayout.SOUTH);
 		
 		label = new JLabel(username + " : " + points);
-		label2 = new JLabel("Other Fisherman: " + pointsOther);
+		
 		panel.add(label);
+		panel.add(button1);
+		button1.addActionListener(this);
+		panel.add(button3);
+		button3.addActionListener(this);
+		
+		label2 = new JLabel("Other Fisherman: " + pointsOther);
+		panel.add(label2);		
+		panel.add(button2);
 		
 		button2.addActionListener(this);
 		panel.add(button4);

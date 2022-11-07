@@ -162,7 +162,7 @@ class MsgQueueManager implements Runnable {
 				catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
+			}	
 		}
 		return;
 	}
