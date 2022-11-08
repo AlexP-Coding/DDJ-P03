@@ -67,21 +67,9 @@ public class PlayerSocket {
 		return this.socketInfo.readMsg();
 	}
 	
-	
-	public int sendNewPlayerMsg() throws IOException {
+	public void sendNewPlayerMsg() throws IOException {
 		String msg = GameCommand.createCommandMsg(CommandType.NEW_PLAYER, this.player.getId(), null);
 		sendMsg(msg);
-		
-		String response;
-		while (true) {
-			response = readMsg();
-			if (response != null) {
-				System.out.printf("Player acknowleged with code %s %n", response);
-				break;
-			}
-		}
-		int playerCode = Integer.parseInt(response);
-		return playerCode;
 	}
 	
 	public void sendGameStartMsg() throws IOException {

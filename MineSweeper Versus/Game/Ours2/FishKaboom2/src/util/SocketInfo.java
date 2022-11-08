@@ -19,6 +19,7 @@ public class SocketInfo {
 		this.socket = socket;
 		this.address = socket.getInetAddress().getHostAddress();
 		this.port = socket.getPort();
+		this.type = type;
 	}
 
 	public Socket getSocket() {

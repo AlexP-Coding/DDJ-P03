@@ -14,21 +14,57 @@ public class Board extends JPanel {
 	public static MineButton[][] grid;
 	private int totalBombs=0;
 	private int maxBombs = ClientView.BOMB_COUNT;
-	
+	private int bombsFound = 0;
+	private int bombLimit = 5;
+	private int safeSpotsLeft;
+	private boolean isFirstClick = true;
+
 	public Board(Handler handler) throws IOException {		
 		super();
 		Board.grid = new MineButton[ClientView.X][ClientView.Y];
 		this.makeNewBoard(handler);
-		this.placeMines();
-		this.placeNumbersandSpaces();
+		// FOR PLAYER, WHO NEEDS CLICKS ACKNOWLEDGED
+		// BUT NOT BOARD FILLED
+		if (handler == null) { 
+			this.placeMines();
+			this.placeNumbersandSpaces();
+		}
         this.setBounds(0, 0, ClientView.Y * ClientView.WIDTH, ClientView.X * ClientView.HEIGHT);
         this.setLayout(new GridLayout(ClientView.X, ClientView.Y));
 		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
+		this.safeSpotsLeft = ClientView.X * ClientView.Y - ClientView.BOMB_COUNT;
 		
 	}
 	
+	public boolean isFirstClick() {
+		return this.isFirstClick;
+	}
+
+	public void setIsFirstClick(boolean isFC) {
+		this.isFirstClick = isFC;
+	}
 	
+	public void findBomb() {
+		this.bombsFound++;
+	}
+	
+	public int getBombsFound() {
+		return this.bombsFound;
+	}
+	
+	public int getBombLimit() {
+		return this.bombLimit;
+	}
+	
+	public void findSafeSpot() {
+		this.safeSpotsLeft--;
+	}
+	
+	public int getSafeSpotsLeft() {
+		return this.safeSpotsLeft;
+	}
+
 	//Iniciates a grid of undiscovered mines
 	public void makeNewBoard(Handler handler) throws IOException {
 		try {
@@ -112,4 +148,5 @@ public class Board extends JPanel {
 	public MineButton[][] getAllMineButton() {
 		return Board.grid;
 	}
+	
 }

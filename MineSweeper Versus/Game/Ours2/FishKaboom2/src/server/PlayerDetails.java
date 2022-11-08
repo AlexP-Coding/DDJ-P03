@@ -21,7 +21,7 @@ public class PlayerDetails {
 	
 	public PlayerDetails() {
 		this.nrPlayers = 0;
-		this.maxPlayers = 1;
+		this.maxPlayers = 2;
 		this.playersList = new ArrayList<PlayerSocket>();
 		this.playersMap = new HashMap<String, PlayerSocket>();
 	}

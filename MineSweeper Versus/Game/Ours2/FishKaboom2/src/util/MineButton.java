@@ -51,18 +51,19 @@ public class MineButton extends JButton{
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-				try {
-					if(SwingUtilities.isRightMouseButton(e)) {
-						rightClickButton();
-					} else {
-						clickButton();
-					}
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
+				if (handler != null) {
+					// TODO Auto-generated method stub
+					try {
+						if(SwingUtilities.isRightMouseButton(e)) {
+							rightClickButton();
+						} else {
+							clickButton();
+						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}					
+				}	
 			}
 
 			@Override
@@ -236,51 +237,42 @@ public class MineButton extends JButton{
 	}
 	
 	
-	public ArrayList listofadjacenteswithoutBomb() {
+	public List<MineButton> listofAdjacentsWithoutBomb() {
 		int px = this.getPosx();
 		int py = this.getPosy();
 		
 		if(noBombsAdjacent(px,py,null, Location.LEFT)) {
-			Board.getMineButton(px, py-1).setCleared(true);
 			adjacentes.add(Board.getMineButton(px, py-1));
 		}
 		
 		if(noBombsAdjacent(px,py,null, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px, py+1));
-			Board.getMineButton(px, py+1).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.TOP, null)) {
 			adjacentes.add(Board.getMineButton(px-1,py));
-			Board.getMineButton(px-1, py).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.BOTTOM, null)) {
 			adjacentes.add(Board.getMineButton(px+1, py));
-			Board.getMineButton(px+1, py).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.TOP, Location.LEFT)) {
 			adjacentes.add(Board.getMineButton(px-1,py-1));
-			Board.getMineButton(px-1,py-1).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.BOTTOM, Location.LEFT)) {
 			adjacentes.add(Board.getMineButton(px+1,py-1));
-			Board.getMineButton(px+1,py-1).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.TOP, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px-1,py+1));
-			Board.getMineButton(px-1,py+1).setCleared(true);
 		}
 		
 		if(noBombsAdjacent(px,py,Location.BOTTOM, Location.RIGHT)) {
 			adjacentes.add(Board.getMineButton(px+1,py+1));
-			Board.getMineButton(px+1,py+1).setCleared(true);
 		}
 		
-//System.out.println("ultimo adjacente: " + adjacentes.size());
 		return adjacentes;
 
 	}
