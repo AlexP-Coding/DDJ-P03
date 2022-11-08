@@ -114,6 +114,9 @@ public class ServerMsgManager implements Runnable {
 		return;
 	}
 	
+	/*
+	 * Sends flag msg to all players
+	 */
 	public void interpretFlag(GameCommand cmd) throws IOException {
 		List<String> tokens = cmd.getTokens();
 		String playerId = cmd.getPlayerId();

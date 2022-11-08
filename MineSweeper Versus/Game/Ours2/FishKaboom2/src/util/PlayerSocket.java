@@ -67,7 +67,6 @@ public class PlayerSocket {
 		return this.socketInfo.readMsg();
 	}
 	
-	
 	public void sendNewPlayerMsg() throws IOException {
 		String msg = GameCommand.createCommandMsg(CommandType.NEW_PLAYER, this.player.getId(), null);
 		sendMsg(msg);
