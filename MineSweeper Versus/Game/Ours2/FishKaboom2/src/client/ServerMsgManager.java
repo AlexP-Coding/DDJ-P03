@@ -126,11 +126,12 @@ public class ServerMsgManager implements Runnable {
 		
 		MineButton spot = board.getMineButton(x, y);
 		
+		spot.setFlagged(!spot.isFlagged());
+
 		if (spot.isFlagged())
 			spot.setImageFlagged();
 		else
 			spot.setGridStyleDefault();
 		
-		spot.setFlagged(!spot.isFlagged());
 	}
 }
